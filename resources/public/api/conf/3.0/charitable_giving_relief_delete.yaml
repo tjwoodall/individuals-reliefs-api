@@ -1,48 +1,40 @@
+summary: "Delete Charitable Giving Tax Relief [test only]"
 description: |
-  This endpoint enables you to retrieve relief investments from: 
-  VCT subscriptions, EIS subscriptions, Community Investments, Seed Enterprise Investments 
-  and Social Enterprise Investments. 
-  A National Insurance number and tax year must be provided.
+  This endpoint enables you to delete charitable giving tax relief for a tax year. A National Insurance number and tax 
+  year must be provided.
 
   ### Test data
-  Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+  Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.  
   
-  | Header Value (Gov-Test-Scenario) | Scenario                                       |
-  |----------------------------------|------------------------------------------------|
-  | N/A - DEFAULT                    | Simulates a success response.                  |
-  | NOT_FOUND                        | Simulates the scenario where no data is found. |
-  | STATEFUL                         | Performs a stateful retrieve.                  |
+  | Header Value (Gov-Test-Scenario) | Scenario                                                                                                                                                    |
+  |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  | DELETE                           | Simulates success response.                                                                                                                                 |
+  | NOT_FOUND                        | Simulates the scenario where no data is found.                                                                                                              |
+  | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window.                                                             |
+  | STATEFUL_DELETE                  | Performs a stateful delete. <br></br>This Gov-Test-Scenario is no longer available in this version. It has been replaced by the STATEFUL Gov-Test-Scenario. |
+  | STATEFUL                         | Performs a stateful delete.                                                                                                                                 |
 
 
 tags:
-  - Relief Investments
+  - Charitable Givings
 
 parameters:
   - $ref: "./common/pathParameters.yaml#/components/parameters/nino"
   - $ref: "./common/pathParameters.yaml#/components/parameters/taxYear"
   - $ref: "./common/headers.yaml#/components/parameters/acceptHeader"
-  - $ref: "./common/headers.yaml#/components/parameters/authorizationReadScopeHeader"
+  - $ref: "./common/headers.yaml#/components/parameters/authorizationWriteScopeHeader"
   - $ref: "./common/headers.yaml#/components/parameters/testScenarioHeader"
 
 security:
   - User-Restricted:
-      - read:self-assessment
+      - write:self-assessment
 
 responses:
-  "200":
-    description: Success
+  "204":
+    description: Success(No Content)
     headers:
       X-CorrelationId:
         $ref: "./common/headers.yaml#/components/parameters/correlationId"
-    content:
-      application/json:
-        schema:
-          $ref: "./schemas/retrieve_relief_investments_response.json"
-        examples:
-          example-response:
-            description: Example response
-            value:
-              $ref: "./examples/retrieve_relief_investments_response.json"
 
   "400":
     description: Bad request
@@ -60,10 +52,10 @@ responses:
             $ref: "./common/errors.yaml#/components/examples/formatTaxYear"
           RULE_TAX_YEAR_NOT_SUPPORTED:
             $ref: "./common/errors.yaml#/components/examples/ruleTaxYearNotSupported"
-          RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
-            $ref: "./common/errors.yaml#/components/examples/ruleTaxYearForVersionNotSupported"
           RULE_TAX_YEAR_RANGE_INVALID:
             $ref: "./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid"
+          RULE_OUTSIDE_AMENDMENT_WINDOW:
+            $ref: "./common/errors.yaml#/components/examples/ruleOutsideAmendmentWindow"
           RULE_INCORRECT_GOV_TEST_SCENARIO:
             $ref: './common/errors.yaml#/components/examples/ruleIncorrectGovTestScenario'
 

@@ -1,0 +1,17 @@
+get:
+  $ref: "./relief_investments_retrieve.yaml"
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+put:
+  $ref: "./relief_investments_amend.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment
+
+delete:
+  $ref: "./relief_investments_delete.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment
