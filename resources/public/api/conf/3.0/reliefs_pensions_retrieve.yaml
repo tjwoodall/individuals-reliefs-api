@@ -1,21 +1,18 @@
+summary: "Retrieve Pensions Reliefs [test only]"
 description: |
-  This endpoint enables you to retrieve relief investments from: 
-  VCT subscriptions, EIS subscriptions, Community Investments, Seed Enterprise Investments 
-  and Social Enterprise Investments. 
-  A National Insurance number and tax year must be provided.
+  This endpoint enables you to retrieve tax relief on pension contributions. A National Insurance number and tax year must be provided.
 
   ### Test data
   Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
   
   | Header Value (Gov-Test-Scenario) | Scenario                                       |
   |----------------------------------|------------------------------------------------|
-  | N/A - DEFAULT                    | Simulates a success response.                  |
+  | N/A - DEFAULT                    | Simulate a successful response.                |
   | NOT_FOUND                        | Simulates the scenario where no data is found. |
   | STATEFUL                         | Performs a stateful retrieve.                  |
 
-
 tags:
-  - Relief Investments
+  - Pensions Reliefs
 
 parameters:
   - $ref: "./common/pathParameters.yaml#/components/parameters/nino"
@@ -37,12 +34,12 @@ responses:
     content:
       application/json:
         schema:
-          $ref: "./schemas/retrieve_relief_investments_response.json"
+          $ref: "./schemas/retrieve_relief_pensions_response.json"
         examples:
           example-response:
             description: Example response
             value:
-              $ref: "./examples/retrieve_relief_investments_response.json"
+              $ref: "./examples/retrieve_relief_pensions_response.json"
 
   "400":
     description: Bad request
@@ -58,12 +55,10 @@ responses:
             $ref: "./common/errors.yaml#/components/examples/formatNino"
           FORMAT_TAX_YEAR:
             $ref: "./common/errors.yaml#/components/examples/formatTaxYear"
-          RULE_TAX_YEAR_NOT_SUPPORTED:
-            $ref: "./common/errors.yaml#/components/examples/ruleTaxYearNotSupported"
-          RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
-            $ref: "./common/errors.yaml#/components/examples/ruleTaxYearForVersionNotSupported"
           RULE_TAX_YEAR_RANGE_INVALID:
             $ref: "./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid"
+          RULE_TAX_YEAR_NOT_SUPPORTED:
+            $ref: "./common/errors.yaml#/components/examples/ruleTaxYearNotSupported"
           RULE_INCORRECT_GOV_TEST_SCENARIO:
             $ref: './common/errors.yaml#/components/examples/ruleIncorrectGovTestScenario'
 

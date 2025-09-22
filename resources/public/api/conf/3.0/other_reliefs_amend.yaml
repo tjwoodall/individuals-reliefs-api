@@ -1,22 +1,24 @@
+summary: "Create and Amend Other Reliefs [test only]"
 description: |
-  This endpoint enables you to create and amend relief investments from: VCT subscriptions, EIS subscriptions, 
-  Community Investments, Seed Enterprise Investments and Social Enterprise Investments. A National Insurance number and 
-  tax year must be provided.
-
-  > <span style="color:red"> **Warning:**
-  > Social Enterprise Investments must not be created for tax years 2023-24 onwards.</span>
+  This endpoint enables you to create and amend reliefs other than investments.
+  This includes: 
+  loan interest, payroll giving, shares and securities redemptions, 
+  maintenance payments, post cessation reliefs, annual payments and 
+  qualifying loan interest payments. A National Insurance number and tax year must be provided.
 
   ### Test data
   Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
   
-  | Header Value (Gov-Test-Scenario) | Scenario                                 |
-  |----------------------------------|------------------------------------------|
-  | N/A - DEFAULT                    | Simulates a success response.            |
-  | STATEFUL                         | Performs a stateful create or update.    |
+  | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+  |----------------------------------|-------------------------------------------------------------------------------------------------|
+  | N/A - DEFAULT                    | Simulates a success response.                                                                   |
+  | SUBMISSION_FAILED                | Simulates the scenario where a submission has failed.                                           |
+  | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+  | STATEFUL                         | Performs a stateful create or update.                                                           |
 
 
 tags:
-  - Relief Investments
+  - Other Reliefs
 
 parameters:
   - $ref: "./common/pathParameters.yaml#/components/parameters/nino"
@@ -34,28 +36,19 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: "./schemas/amend_relief_investments_request.json"
+        $ref: "./schemas/amend_relief_other_request.json"
       examples:
         example-1:
           description: Default Example
           value:
-            $ref: "./examples/amend_relief_investments_request.json"
+            $ref: "./examples/amend_relief_other_request.json"
 
 responses:
-  "200":
-    description: Success
+  "204":
+    description: Success(No Content)
     headers:
       X-CorrelationId:
         $ref: "./common/headers.yaml#/components/parameters/correlationId"
-    content:
-      application/json:
-        schema:
-          $ref: "./schemas/amend_relief_investments_response.json"
-        examples:
-          example-response:
-            description: Example Response
-            value:
-              $ref: "./examples/amend_relief_investments_response.json"
 
   "400":
     description: Bad request
@@ -71,22 +64,32 @@ responses:
             $ref: "./common/errors.yaml#/components/examples/formatNino"
           FORMAT_TAX_YEAR:
             $ref: "./common/errors.yaml#/components/examples/formatTaxYear"
+          FORMAT_NAME_EX_SPOUSE:
+            $ref: "./common/errors.yaml#/components/examples/formatNameExSpouse"
+          FORMAT_NAME_BUSINESS:
+            $ref: "./common/errors.yaml#/components/examples/formatNameBusiness"
+          FORMAT_NATURE_OF_TRADE:
+            $ref: "./common/errors.yaml#/components/examples/formatNatureOfTrade"
+          FORMAT_INCOME_SOURCE:
+            $ref: "./common/errors.yaml#/components/examples/formatIncomeSource"
+          FORMAT_LENDER_NAME:
+            $ref: "./common/errors.yaml#/components/examples/formatLenderName"
           RULE_TAX_YEAR_NOT_SUPPORTED:
             $ref: "./common/errors.yaml#/components/examples/ruleTaxYearNotSupported"
-          RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
-            $ref: "./common/errors.yaml#/components/examples/ruleTaxYearForVersionNotSupported"
           RULE_TAX_YEAR_RANGE_INVALID:
             $ref: "./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid"
           FORMAT_VALUE:
             $ref: "./common/errors.yaml#/components/examples/formatValue"
           RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
             $ref: "./common/errors.yaml#/components/examples/ruleIncorrectOrEmptyBody"
-          FORMAT_DATE_OF_INVESTMENT:
-            $ref: "./common/errors.yaml#/components/examples/formatDateOfInvestment"
-          FORMAT_UNIQUE_INVESTMENT_REFERENCE:
-            $ref: "./common/errors.yaml#/components/examples/formatUniqueInvestmentRef"
-          FORMAT_NAME:
-            $ref: "./common/errors.yaml#/components/examples/formatName"
+          FORMAT_DATE:
+            $ref: "./common/errors.yaml#/components/examples/formatDate"
+          FORMAT_CUSTOMER_REF:
+            $ref: "./common/errors.yaml#/components/examples/formatCustomerRef"
+          RULE_SUBMISSION_FAILED:
+            $ref: "./common/errors.yaml#/components/examples/ruleSubmissionFailed"
+          RULE_OUTSIDE_AMENDMENT_WINDOW:
+            $ref: "./common/errors.yaml#/components/examples/ruleOutsideAmendmentWindow"
           RULE_INCORRECT_GOV_TEST_SCENARIO:
             $ref: './common/errors.yaml#/components/examples/ruleIncorrectGovTestScenario'
 

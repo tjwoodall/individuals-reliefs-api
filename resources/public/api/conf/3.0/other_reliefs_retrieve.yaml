@@ -1,7 +1,6 @@
+summary: "Retrieve Other Reliefs [test only]"
 description: |
-  This endpoint enables you to retrieve relief investments from: 
-  VCT subscriptions, EIS subscriptions, Community Investments, Seed Enterprise Investments 
-  and Social Enterprise Investments. 
+  This endpoint enables you to retrieve details of other reliefs that have been previously submitted. 
   A National Insurance number and tax year must be provided.
 
   ### Test data
@@ -15,7 +14,7 @@ description: |
 
 
 tags:
-  - Relief Investments
+  - Other Reliefs
 
 parameters:
   - $ref: "./common/pathParameters.yaml#/components/parameters/nino"
@@ -37,12 +36,12 @@ responses:
     content:
       application/json:
         schema:
-          $ref: "./schemas/retrieve_relief_investments_response.json"
+          $ref: "./schemas/retrieve_relief_others_response.json"
         examples:
           example-response:
             description: Example response
             value:
-              $ref: "./examples/retrieve_relief_investments_response.json"
+              $ref: "./examples/retrieve_reliefs_other_response.json"
 
   "400":
     description: Bad request
@@ -60,8 +59,6 @@ responses:
             $ref: "./common/errors.yaml#/components/examples/formatTaxYear"
           RULE_TAX_YEAR_NOT_SUPPORTED:
             $ref: "./common/errors.yaml#/components/examples/ruleTaxYearNotSupported"
-          RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
-            $ref: "./common/errors.yaml#/components/examples/ruleTaxYearForVersionNotSupported"
           RULE_TAX_YEAR_RANGE_INVALID:
             $ref: "./common/errors.yaml#/components/examples/ruleTaxYearRangeInvalid"
           RULE_INCORRECT_GOV_TEST_SCENARIO:

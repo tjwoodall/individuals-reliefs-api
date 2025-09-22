@@ -1,0 +1,17 @@
+get:
+  $ref: "./reliefs_pensions_retrieve.yaml"
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+put:
+  $ref: "./reliefs_pensions_amend.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment
+
+delete:
+  $ref: "./reliefs_pensions_delete.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment

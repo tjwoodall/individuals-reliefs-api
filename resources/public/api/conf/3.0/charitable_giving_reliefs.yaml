@@ -1,0 +1,18 @@
+get:
+  $ref: "./charitable_giving_relief_retrieve.yaml"
+  security:
+    - User-Restricted:
+        - read:self-assessment
+
+put:
+  $ref: "./charitable_giving_relief_amend.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment
+
+
+delete:
+  $ref: "./charitable_giving_relief_delete.yaml"
+  security:
+    - User-Restricted:
+        - write:self-assessment
