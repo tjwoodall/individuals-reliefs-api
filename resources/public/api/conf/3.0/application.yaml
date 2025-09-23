@@ -2,7 +2,7 @@ openapi: "3.0.3"
 
 info:
   version: "3.0"
-  title: Individuals Reliefs (MTD)
+  title: Individuals Reliefs (MTD){{#maybeTestOnly "3.0 api-released-in-production"}}{{/maybeTestOnly}}
   description: |
     The following groups of endpoints are stateful in the Sandbox:
     * [Relief Investments](#tag/Relief-Investments)
