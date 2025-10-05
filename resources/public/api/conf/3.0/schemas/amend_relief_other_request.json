@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Amend Other Reliefs",
   "description": "Allows the amendments of other reliefs",
   "type": "object",

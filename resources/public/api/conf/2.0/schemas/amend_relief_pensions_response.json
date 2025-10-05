@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Amend Pensions Reliefs",
   "description": "Allows the amendments of pensions reliefs",
   "type": "object",

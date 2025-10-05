@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Retrieve Other Reliefs",
   "description": "Allows the retrieval of other reliefs",
   "type": "object",

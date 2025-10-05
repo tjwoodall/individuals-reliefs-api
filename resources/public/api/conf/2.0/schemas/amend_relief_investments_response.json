@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Amend Relief Investments",
   "description": "Allows the amendments of relief investments",
   "type": "object",

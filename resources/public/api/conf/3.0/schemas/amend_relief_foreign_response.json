@@ -1,5 +1,4 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Amend Foreign Reliefs",
   "description": "Allows the amendments of foreign reliefs",
   "type": "object",
