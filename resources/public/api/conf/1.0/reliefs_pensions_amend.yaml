@@ -33,8 +33,7 @@ requestBody:
       examples:
         example-1:
           description: Default Example
-          value:
-            $ref: "./examples/amend_relief_pensions_request.json"
+          externalValue: "./examples/amend_relief_pensions_request.json"
 
 responses:
   "200":
@@ -49,8 +48,7 @@ responses:
         examples:
           example-response:
             description: Example Response
-            value:
-              $ref: "./examples/amend_relief_pensions_response.json"
+            externalValue: "./examples/amend_relief_pensions_response.json"
 
   "400":
     description: Bad request
