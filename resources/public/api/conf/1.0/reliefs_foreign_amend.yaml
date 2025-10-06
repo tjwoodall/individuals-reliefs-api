@@ -34,8 +34,7 @@ requestBody:
       examples:
         example-1:
           description: Default Example
-          value:
-            $ref: "./examples/amend_relief_foreign_request.json"
+          externalValue: "./examples/amend_relief_foreign_request.json"
 
 responses:
   "200":
@@ -50,8 +49,7 @@ responses:
         examples:
           example-response:
             description: Example Response
-            value:
-              $ref: "./examples/amend_relief_foreign_response.json"
+            externalValue: "./examples/amend_relief_foreign_response.json"
 
   "400":
     description: Bad request
