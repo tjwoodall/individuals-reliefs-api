@@ -36,8 +36,7 @@ requestBody:
       examples:
         example-1:
           description: Default Example
-          value:
-            $ref: "./examples/amend_charitable_giving_request.json"
+          externalValue: "./examples/amend_charitable_giving_request.json"
 
 responses:
   "204":
