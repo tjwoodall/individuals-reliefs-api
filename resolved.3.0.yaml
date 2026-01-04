@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: "Individuals Reliefs (MTD) [test only]"
+  title: Individuals Reliefs (MTD)
   description: "The following groups of endpoints are stateful in the Sandbox:\n*\
     \ [Relief Investments](#tag/Relief-Investments)\n* [Other Reliefs](#tag/Other-Reliefs)\n\
     * [Foreign Reliefs](#tag/Foreign-Reliefs)\n* [Pensions Reliefs](#tag/Pensions-Reliefs)\n\

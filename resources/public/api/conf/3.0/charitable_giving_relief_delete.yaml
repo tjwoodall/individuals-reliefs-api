@@ -1,4 +1,4 @@
-summary: "Delete Charitable Giving Tax Relief [test only]"
+summary: Delete Charitable Giving Tax Relief
 description: |
   This endpoint enables you to delete charitable giving tax relief for a tax year. A National Insurance number and tax 
   year must be provided.
