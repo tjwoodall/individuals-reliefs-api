@@ -1,0 +1,4095 @@
+openapi: 3.0.3
+info:
+  version: '2.0'
+  title: Individuals Reliefs (MTD)
+  description: |
+    The following groups of endpoints are stateful in the Sandbox:
+    * [Relief Investments](#tag/Relief-Investments)
+    * [Other Reliefs](#tag/Other-Reliefs)
+    * [Foreign Reliefs](#tag/Foreign-Reliefs)
+    * [Pensions Reliefs](#tag/Pensions-Reliefs)
+    * [Charitable Givings](#tag/Charitable-Givings)
+
+    # Send fraud prevention data
+    HMRC monitors transactions to help protect your customers' confidential data from criminals and fraudsters. 
+    <div class="govuk-warning-text warning-icon-fix">
+      <span class="govuk-warning-text__icon warning-icon-ui-fix" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        You are required by law to submit header data for this API. This includes all associated APIs and endpoints.
+      </strong>
+    </div>
+
+    [Check the data you need to send](/guides/fraud-prevention/). You can also use the [Test API](/api-documentation/docs/api/service/txm-fph-validator-api/2.0) during initial development and as part of your quality assurance checks.
+
+    # Mapping APIs to Self Assessment tax return forms
+    Some parameters in this API map to box numbers in one or more Self Assessment tax return forms. To learn more and to download this mapping information as a CSV file, go to [income-tax-mtd-changelog/mapping](https://github.com/hmrc/income-tax-mtd-changelog?tab=readme-ov-file#mapping-apis-to-self-assessment-tax-return-forms) on GitHub.
+
+    # Changelog
+    You can find the changelog in the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/#readme) on GitHub.
+
+    # Support
+
+    * Direct reports of bugs or errors in Production or Sandbox code, or queries about HMRC business functionality (such as how a specific field is used by HMRC or why it is needed) to the [Software Development Support Team (SDST)](https://developer.service.hmrc.gov.uk/developer/support).
+    * Send queries or feedback related to the design of the APIs (including recommended changes) using the [income-tax-mtd-changelog](https://github.com/hmrc/income-tax-mtd-changelog/issues) GitHub page.
+    * <a href="/contact/report-technical-problem?newTab=true&service=api-documentation-frontend" target="_blank">Is this page not working properly? (opens in new tab)</a>
+servers:
+  - url: https://test-api.service.hmrc.gov.uk
+    description: Sandbox
+  - url: https://api.service.hmrc.gov.uk
+    description: Production
+tags:
+  - name: Relief Investments
+    description: Resources relating to an individual's relief investments
+  - name: Other Reliefs
+    description: Resources relating to an individual's other reliefs
+  - name: Foreign Reliefs
+    description: Resources relating to an individual's foreign reliefs
+  - name: Pensions Reliefs
+    description: Resources relating to an individual's pensions reliefs
+  - name: Charitable Givings
+    description: Resources relating to an individual's charitable givings
+paths:
+  /individuals/reliefs/investment/{nino}/{taxYear}:
+    get:
+      summary: Retrieve Relief Investments
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve relief investments from: 
+        VCT subscriptions, EIS subscriptions, Community Investments, Seed Enterprise Investments 
+        and Social Enterprise Investments. 
+        A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates a success response.                  |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | STATEFUL                         | Performs a stateful retrieve.                  |
+      tags:
+        - Relief Investments
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: &ref_3
+            type: string
+            example: TC663795B
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: &ref_4
+            type: string
+            pattern: ^\d{4}-\d{2}$
+            example: 2022-23
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: &ref_5
+            type: string
+            enum:
+              - application/vnd.hmrc.2.0+json
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: &ref_17
+            type: string
+            example: Bearer bb7fed3fe10dd235a2ccda3d50fb
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: &ref_6
+            type: string
+            example: '-'
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: &ref_0
+                type: string
+                example: c75f40a6-a3df-4429-a697-471eeec46435
+              required: true
+          content:
+            application/json:
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                title: Retrieve Relief Investments
+                description: Allows the retrieval of relief investments
+                type: object
+                properties:
+                  submittedOn:
+                    description: The date the investment relief was added. It must be provided in the format YYYY-MM-DDThh:mm:ss.SSSZ
+                    type: string
+                    example: '2019-04-04T01:01:01.000Z'
+                  vctSubscription:
+                    description: Financial details about VCT subscriptions income
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uniqueInvestmentRef:
+                          description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                          example: '12345678'
+                        name:
+                          description: The name of the investment or fund.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                          example: VCT fund
+                        dateOfInvestment:
+                          description: |-
+                            The date of the investment.
+
+                            Date in the format YYYY-MM-DD
+                          type: string
+                          example: '2018-04-06'
+                        amountInvested:
+                          description: |-
+                            The total amount invested.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        reliefClaimed:
+                          description: |-
+                            The amount on which relief is claimed for the tax year.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - uniqueInvestmentRef
+                        - reliefClaimed
+                      additionalProperties: false
+                  eisSubscription:
+                    description: Financial details about EIS subscriptions income.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uniqueInvestmentRef:
+                          description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                          example: '12345678'
+                        name:
+                          description: The name of the investment or fund
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                          example: EIS fund
+                        knowledgeIntensive:
+                          description: Companies that are carrying out research, development or innovation.
+                          type: boolean
+                          example: 'true'
+                        dateOfInvestment:
+                          description: |-
+                            The date of the investment.
+
+                            Date in the format YYYY-MM-DD
+                          type: string
+                          example: '2018-04-06'
+                        amountInvested:
+                          description: |-
+                            The total amount invested.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        reliefClaimed:
+                          description: |-
+                            The amount on which relief is claimed for the tax year.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - uniqueInvestmentRef
+                        - reliefClaimed
+                      additionalProperties: false
+                  communityInvestment:
+                    description: Financial details about community investment income.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uniqueInvestmentRef:
+                          description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                          example: '12345678'
+                        name:
+                          description: The name of the investment or fund.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                          example: CI X
+                        dateOfInvestment:
+                          description: |-
+                            The date of the investment.
+
+                            Date in the format YYYY-MM-DD
+                          type: string
+                          example: '2018-04-06'
+                        amountInvested:
+                          description: |-
+                            The total amount invested.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        reliefClaimed:
+                          description: |-
+                            The amount of relief being claimed for the year.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - uniqueInvestmentRef
+                        - reliefClaimed
+                      additionalProperties: false
+                  seedEnterpriseInvestment:
+                    description: Financial details about Seed Investment Income.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uniqueInvestmentRef:
+                          description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                          example: '12345678'
+                        companyName:
+                          description: The name of the company holding the investment.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                          example: Company Inc
+                        dateOfInvestment:
+                          description: |-
+                            The date of the investment.
+
+                            Date in the format YYYY-MM-DD
+                          type: string
+                          example: '2018-04-06'
+                        amountInvested:
+                          description: |-
+                            The total amount invested.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        reliefClaimed:
+                          description: |-
+                            The amount on which relief is claimed for the tax year.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - uniqueInvestmentRef
+                        - reliefClaimed
+                      additionalProperties: false
+                  socialEnterpriseInvestment:
+                    description: Financial details about social enterprise investment income.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uniqueInvestmentRef:
+                          description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                          example: '12345678'
+                        socialEnterpriseName:
+                          description: The name of the investment or fund.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                          example: SE Inc
+                        dateOfInvestment:
+                          description: |-
+                            The date of the investment.
+
+                            Date in the format YYYY-MM-DD
+                          type: string
+                          example: '2018-04-06'
+                        amountInvested:
+                          description: |-
+                            The total amount invested.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        reliefClaimed:
+                          description: |-
+                            The amount on which relief is claimed for the tax year.
+
+                            The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - uniqueInvestmentRef
+                        - reliefClaimed
+                      additionalProperties: false
+                required:
+                  - submittedOn
+                additionalProperties: false
+              examples:
+                example-response:
+                  description: Example response
+                  value:
+                    submittedOn: '2019-04-04T01:01:01.000Z'
+                    vctSubscription:
+                      - uniqueInvestmentRef: VCTREF
+                        name: VCT Fund X
+                        dateOfInvestment: '2018-04-16'
+                        amountInvested: 23312
+                        reliefClaimed: 1334
+                    eisSubscription:
+                      - uniqueInvestmentRef: XTAL
+                        name: EIS Fund X
+                        knowledgeIntensive: true
+                        dateOfInvestment: '2020-12-12'
+                        amountInvested: 23312
+                        reliefClaimed: 43432
+                    communityInvestment:
+                      - uniqueInvestmentRef: CIREF
+                        name: CI X
+                        dateOfInvestment: '2020-12-12'
+                        amountInvested: 6442
+                        reliefClaimed: 2344
+                    seedEnterpriseInvestment:
+                      - uniqueInvestmentRef: 1234121A
+                        companyName: Company Inc
+                        dateOfInvestment: '2020-12-12'
+                        amountInvested: 123123.22
+                        reliefClaimed: 3432
+                    socialEnterpriseInvestment:
+                      - uniqueInvestmentRef: 1234121A
+                        socialEnterpriseName: SE Inc
+                        dateOfInvestment: '2020-12-12'
+                        amountInvested: 123123.22
+                        reliefClaimed: 3432
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: &ref_1
+                  code:
+                    description: The error code
+                    type: string
+                  message:
+                    description: The error message
+                    type: string
+                required: &ref_2
+                  - code
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: &ref_7
+                    code: FORMAT_NINO
+                    message: The provided NINO is invalid
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: &ref_8
+                    code: FORMAT_TAX_YEAR
+                    message: The provided tax year is invalid
+                RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
+                  description: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 3.
+                  value: &ref_10
+                    code: RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED
+                    message: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 3.
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: &ref_9
+                    code: RULE_TAX_YEAR_NOT_SUPPORTED
+                    message: The tax year specified does not lie within the supported range
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: &ref_11
+                    code: RULE_TAX_YEAR_RANGE_INVALID
+                    message: Tax year range invalid. A tax year range of one year is required
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: &ref_12
+                    code: RULE_INCORRECT_GOV_TEST_SCENARIO
+                    message: The supplied Gov-Test-Scenario is not valid
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: &ref_13
+                    code: CLIENT_OR_AGENT_NOT_AUTHORISED
+                    message: The client and/or agent is not authorised
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: &ref_16
+                    code: MATCHING_RESOURCE_NOT_FOUND
+                    message: Matching resource not found
+    put:
+      summary: Create and Amend Relief Investments
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create and amend relief investments from: VCT subscriptions, EIS subscriptions, 
+        Community Investments, Seed Enterprise Investments and Social Enterprise Investments. A National Insurance number and 
+        tax year must be provided.
+
+        > <span style="color:red"> **Warning:**
+        > Social Enterprise Investments must not be created for tax years 2023-24 onwards.</span>
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates a success response.                                                                   |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful create or update.                                                           |
+      tags:
+        - Relief Investments
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: &ref_18
+            type: string
+            enum:
+              - application/json
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: &ref_14
+            type: string
+            example: Bearer bb7fed3fe10dd235a2ccda3d50fb
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              title: Amend Relief Investments
+              description: Allows the amendments of relief investments
+              type: object
+              properties:
+                vctSubscription:
+                  description: Financial details about VCT subscriptions income
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      uniqueInvestmentRef:
+                        description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: '12345678'
+                      name:
+                        description: The name of the investment or fund.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                        example: VCT fund
+                      dateOfInvestment:
+                        description: The date of the investment. Date in the format YYYY-MM-DD
+                        type: string
+                        example: '2018-04-06'
+                      amountInvested:
+                        description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - uniqueInvestmentRef
+                      - reliefClaimed
+                    additionalProperties: false
+                eisSubscription:
+                  description: Financial details about EIS subscriptions income.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      uniqueInvestmentRef:
+                        description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: '12345678'
+                      name:
+                        description: The name of the investment or fund
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                        example: EIS fund
+                      knowledgeIntensive:
+                        description: A boolean indicating whether companies are carrying out research, development or innovation.
+                        type: boolean
+                        example: 'true'
+                      dateOfInvestment:
+                        description: The date of the investment. Date in the format YYYY-MM-DD
+                        type: string
+                        example: '2018-04-06'
+                      amountInvested:
+                        description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - uniqueInvestmentRef
+                      - reliefClaimed
+                    additionalProperties: false
+                communityInvestment:
+                  description: Financial details about community investment income.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      uniqueInvestmentRef:
+                        description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: '12345678'
+                      name:
+                        description: The name of the investment or fund.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                        example: CI X
+                      dateOfInvestment:
+                        description: The date of the investment. Date in the format YYYY-MM-DD
+                        type: string
+                        example: '2018-04-06'
+                      amountInvested:
+                        description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      reliefClaimed:
+                        description: The amount of relief being claimed for the year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - uniqueInvestmentRef
+                      - reliefClaimed
+                    additionalProperties: false
+                seedEnterpriseInvestment:
+                  description: Financial details about seed investment income.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      uniqueInvestmentRef:
+                        description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: '12345678'
+                      companyName:
+                        description: The name of the company holding the investment.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                        example: Company Inc
+                      dateOfInvestment:
+                        description: The date of the investment. Date in the format YYYY-MM-DD
+                        type: string
+                        example: '2018-04-06'
+                      amountInvested:
+                        description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - uniqueInvestmentRef
+                      - reliefClaimed
+                    additionalProperties: false
+                socialEnterpriseInvestment:
+                  description: Financial details about social enterprise investment income.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      uniqueInvestmentRef:
+                        description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: '12345678'
+                      socialEnterpriseName:
+                        description: The name of the investment or fund.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
+                        example: SE Inc
+                      dateOfInvestment:
+                        description: The date of the investment. Date in the format YYYY-MM-DD.
+                        type: string
+                        example: '2018-04-06'
+                      amountInvested:
+                        description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - uniqueInvestmentRef
+                      - reliefClaimed
+                    additionalProperties: false
+              additionalProperties: false
+            examples:
+              example-1:
+                description: Default Example
+                value:
+                  vctSubscription:
+                    - uniqueInvestmentRef: VCTREF
+                      name: VCT Fund X
+                      dateOfInvestment: '2018-04-16'
+                      amountInvested: 23312
+                      reliefClaimed: 1334
+                  eisSubscription:
+                    - uniqueInvestmentRef: XTAL
+                      name: EIS Fund X
+                      knowledgeIntensive: true
+                      dateOfInvestment: '2020-12-12'
+                      amountInvested: 23312
+                      reliefClaimed: 43432
+                  communityInvestment:
+                    - uniqueInvestmentRef: CIREF
+                      name: CI X
+                      dateOfInvestment: '2020-12-12'
+                      amountInvested: 6442
+                      reliefClaimed: 2344
+                  seedEnterpriseInvestment:
+                    - uniqueInvestmentRef: 1234121A
+                      companyName: Company Inc
+                      dateOfInvestment: '2020-12-12'
+                      amountInvested: 123123.22
+                      reliefClaimed: 3432
+                  socialEnterpriseInvestment:
+                    - uniqueInvestmentRef: 1234121A
+                      socialEnterpriseName: SE Inc
+                      dateOfInvestment: '2020-12-12'
+                      amountInvested: 123123.22
+                      reliefClaimed: 3432
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_FOR_VERSION_NOT_SUPPORTED:
+                  description: This version of the API supports tax years up to, and including, 2024-25. For tax years from 2025-26 onwards, use version 3.
+                  value: *ref_10
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: &ref_19
+                    code: FORMAT_VALUE
+                    message: The value must be between 0 and 99999999999.99
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: &ref_20
+                    code: RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED
+                    message: An empty or non-matching body was submitted
+                FORMAT_DATE_OF_INVESTMENT:
+                  description: The format of the investment date is invalid.
+                  value:
+                    code: FORMAT_DATE_OF_INVESTMENT
+                    message: The format of the investment date is invalid
+                FORMAT_UNIQUE_INVESTMENT_REFERENCE:
+                  description: The format of unique investment reference is invalid.
+                  value:
+                    code: FORMAT_UNIQUE_INVESTMENT_REFERENCE
+                    message: The format of unique investment reference is invalid
+                FORMAT_NAME:
+                  description: The format of name is invalid.
+                  value:
+                    code: FORMAT_NAME
+                    message: The format of name is invalid
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: &ref_15
+                    code: RULE_OUTSIDE_AMENDMENT_WINDOW
+                    message: You are outside the amendment window
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+    delete:
+      summary: Delete Relief Investments
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete relief investments from:
+        VCT subscriptions, EIS subscriptions, Community Investments,
+        Seed Enterprise Investments and Social Enterprise Investments.
+        A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates a success response.                                                                   |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                  |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful delete.                                                                     |
+      tags:
+        - Relief Investments
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+  /individuals/reliefs/other/{nino}/{taxYear}:
+    get:
+      summary: Retrieve Other Reliefs
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve details of other reliefs that have been previously submitted. 
+        A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates a success response.                  |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | STATEFUL                         | Performs a stateful retrieve.                  |
+      tags:
+        - Other Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: *ref_17
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                title: Retrieve Other Reliefs
+                description: Allows the retrieval of other reliefs
+                type: object
+                properties:
+                  submittedOn:
+                    description: The date the other reliefs was added. It must be provided in the format YYYY-MM-DDThh:mm:ssZ
+                    type: string
+                    example: '2019-04-04T01:01:01.000Z'
+                  nonDeductibleLoanInterest:
+                    description: Details of non-deductible loan interest claimed
+                    type: object
+                    properties:
+                      customerReference:
+                        description: A reference or friendly name used by the customer.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: INPOLY123A
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - reliefClaimed
+                    additionalProperties: false
+                  payrollGiving:
+                    description: Details of payroll giving relief claimed.
+                    type: object
+                    properties:
+                      customerReference:
+                        description: A reference or friendly name used by the customer.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: INPOLY123A
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - reliefClaimed
+                    additionalProperties: false
+                  qualifyingDistributionRedemptionOfSharesAndSecurities:
+                    description: Details of qualifying shares and securities distributed that qualify for relief.
+                    type: object
+                    properties:
+                      customerReference:
+                        description: A reference or friendly name used by the customer.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: INPOLY123A
+                      amount:
+                        description: The amount of relief claimed on qualifying shares and securities. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - amount
+                    additionalProperties: false
+                  maintenancePayments:
+                    description: Details of maintenance payments made to an ex-spouse.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        customerReference:
+                          description: A reference or friendly name used by the customer.
+                          type: string
+                          example: INPOLY123A
+                        exSpouseName:
+                          description: The name of the ex-spouse who receives the payment.
+                          type: string
+                        exSpouseDateOfBirth:
+                          description: |-
+                            The date ex-spouse was born.
+
+                            Date in the format: YYYY-MM-DD
+                          type: string
+                          example: '2018-04-06'
+                        amount:
+                          description: The amount paid to a former spouse or civil partner who was born before 6 April 1935. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - amount
+                      additionalProperties: false
+                  postCessationTradeReliefAndCertainOtherLosses:
+                    description: Details of trade reliefs and other losses post cessation of a business.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        customerReference:
+                          description: A reference or friendly name used by the customer.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                          example: INPOLY123A
+                        businessName:
+                          description: The name of the business that has ceased trading.
+                          type: string
+                        dateBusinessCeased:
+                          description: 'The date the business ceased trading. Date in the format: YYYY-MM-DD'
+                          type: string
+                          example: '2018-04-06'
+                        natureOfTrade:
+                          description: The trading nature of the business.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        incomeSource:
+                          description: Income source identifier or UTR (Unique Taxpayer Reference).
+                          type: string
+                        amount:
+                          description: The amount which can be deducted from chargeable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - amount
+                      additionalProperties: false
+                  annualPaymentsMade:
+                    description: Details of annual payments made.
+                    type: object
+                    properties:
+                      customerReference:
+                        description: A reference or friendly name used by the customer.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: INPOLY123A
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - reliefClaimed
+                    additionalProperties: false
+                  qualifyingLoanInterestPayments:
+                    description: Details of qualifying loan interest payments made.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        customerReference:
+                          description: A reference or friendly name used by the customer.
+                          type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                          example: INPOLY123A
+                        lenderName:
+                          description: The name of the individual, public group, private group, or financial institution that made the funds available.
+                          type: string
+                        reliefClaimed:
+                          description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2000.99'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      required:
+                        - reliefClaimed
+                      additionalProperties: false
+                required:
+                  - submittedOn
+                additionalProperties: false
+              examples:
+                example-response:
+                  description: Example response
+                  value:
+                    submittedOn: '2019-04-04T01:01:01.000Z'
+                    nonDeductibleLoanInterest:
+                      customerReference: myref
+                      reliefClaimed: 763
+                    payrollGiving:
+                      customerReference: myref
+                      reliefClaimed: 154
+                    qualifyingDistributionRedemptionOfSharesAndSecurities:
+                      customerReference: myref
+                      amount: 222.22
+                    maintenancePayments:
+                      - customerReference: myref
+                        exSpouseName: Hilda
+                        exSpouseDateOfBirth: '2000-01-01'
+                        amount: 222.22
+                    postCessationTradeReliefAndCertainOtherLosses:
+                      - customerReference: myref
+                        businessName: ACME Inc
+                        dateBusinessCeased: '2019-08-10'
+                        natureOfTrade: Widgets Manufacturer
+                        incomeSource: AB12412/A12
+                        amount: 222.22
+                    annualPaymentsMade:
+                      customerReference: myref
+                      reliefClaimed: 763
+                    qualifyingLoanInterestPayments:
+                      - customerReference: myref
+                        lenderName: Maurice
+                        reliefClaimed: 763
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+    put:
+      summary: Create and Amend Other Reliefs
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create and amend reliefs other than investments.
+        This includes: 
+        loan interest, payroll giving, shares and securities redemptions, 
+        maintenance payments, post cessation reliefs, annual payments and 
+        qualifying loan interest payments. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates a success response.                                                                   |
+        | SUBMISSION_FAILED                | Simulates the scenario where a submission has failed.                                           |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful create or update.                                                           |
+      tags:
+        - Other Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: *ref_18
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              title: Amend Other Reliefs
+              description: Allows the amendments of other reliefs
+              type: object
+              properties:
+                nonDeductibleLoanInterest:
+                  description: Details of non-deductible loan interest claimed
+                  type: object
+                  properties:
+                    customerReference:
+                      description: A reference or friendly name used by the customer.
+                      type: string
+                      example: INPOLY123A
+                    reliefClaimed:
+                      description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      type: number
+                      example: '2000.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                  required:
+                    - reliefClaimed
+                  additionalProperties: false
+                payrollGiving:
+                  description: Details of payroll giving relief claimed.
+                  type: object
+                  properties:
+                    customerReference:
+                      description: A reference or friendly name used by the customer.
+                      type: string
+                      pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                      example: INPOLY123A
+                    reliefClaimed:
+                      description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      type: number
+                      example: '2000.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                  required:
+                    - reliefClaimed
+                  additionalProperties: false
+                qualifyingDistributionRedemptionOfSharesAndSecurities:
+                  description: Details of qualifying shares and securities distributed that qualify for relief.
+                  type: object
+                  properties:
+                    customerReference:
+                      description: A reference or friendly name used by the customer.
+                      type: string
+                      pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                      example: INPOLY123A
+                    amount:
+                      description: The amount of relief claimed on qualifying shares and securities. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      type: number
+                      example: '2000.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                  required:
+                    - amount
+                  additionalProperties: false
+                maintenancePayments:
+                  description: Details of maintenance payments made to an ex-spouse.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      customerReference:
+                        description: A reference or friendly name used by the customer.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: INPOLY123A
+                      exSpouseName:
+                        description: The name of the ex-spouse who receives the payment.
+                        type: string
+                      exSpouseDateOfBirth:
+                        description: The date the ex-spouse was born.
+                        type: string
+                        example: '2018-04-06'
+                      amount:
+                        description: The amount paid to a former spouse or civil partner who was born before 6 April 1935. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - amount
+                    additionalProperties: false
+                postCessationTradeReliefAndCertainOtherLosses:
+                  description: Details of trade reliefs and other losses post cessation of a business.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      customerReference:
+                        description: A reference or friendly name used by the customer.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: INPOLY123A
+                      businessName:
+                        description: The name of the business that has ceased trading.
+                        type: string
+                      dateBusinessCeased:
+                        description: 'The date the business ceased trading. Date in the format: YYYY-MM-DD'
+                        type: string
+                        example: '2018-04-06'
+                      natureOfTrade:
+                        description: The trading nature of the business.
+                        type: string
+                      incomeSource:
+                        description: Income source identifier or UTR (Unique Taxpayer Reference).
+                        type: string
+                      amount:
+                        description: The amount which can be deducted from chargeable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - amount
+                    additionalProperties: false
+                annualPaymentsMade:
+                  description: Details of annual payments made.
+                  type: object
+                  properties:
+                    customerReference:
+                      description: A reference or friendly name used by the customer.
+                      type: string
+                      pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                      example: INPOLY123A
+                    reliefClaimed:
+                      description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      type: number
+                      example: '2000.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                  required:
+                    - reliefClaimed
+                  additionalProperties: false
+                qualifyingLoanInterestPayments:
+                  description: Details of qualifying loan interest payments made.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      customerReference:
+                        description: A reference or friendly name used by the customer.
+                        type: string
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
+                        example: INPOLY123A
+                      lenderName:
+                        description: The name of the individual, public group, private group, or financial institution that made the funds available.
+                        type: string
+                      reliefClaimed:
+                        description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - reliefClaimed
+                    additionalProperties: false
+              additionalProperties: false
+            examples:
+              example-1:
+                description: Default Example
+                value:
+                  nonDeductibleLoanInterest:
+                    customerReference: myref
+                    reliefClaimed: 763
+                  payrollGiving:
+                    customerReference: myref
+                    reliefClaimed: 154
+                  qualifyingDistributionRedemptionOfSharesAndSecurities:
+                    customerReference: myref
+                    amount: 222.22
+                  maintenancePayments:
+                    - customerReference: myref
+                      exSpouseName: Hilda
+                      exSpouseDateOfBirth: '2000-01-01'
+                      amount: 222.22
+                  postCessationTradeReliefAndCertainOtherLosses:
+                    - customerReference: myref
+                      businessName: ACME Inc
+                      dateBusinessCeased: '2019-08-10'
+                      natureOfTrade: Widgets Manufacturer
+                      incomeSource: AB12412/A12
+                      amount: 222.22
+                  annualPaymentsMade:
+                    customerReference: myref
+                    reliefClaimed: 763
+                  qualifyingLoanInterestPayments:
+                    - customerReference: myref
+                      lenderName: Maurice
+                      reliefClaimed: 763
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                FORMAT_NAME_EX_SPOUSE:
+                  description: The format of exSpouseName is not valid.
+                  value:
+                    code: FORMAT_NAME_EX_SPOUSE
+                    message: The format of exSpouseName is not valid
+                FORMAT_NAME_BUSINESS:
+                  description: The format of businessName is not valid.
+                  value:
+                    code: FORMAT_NAME_BUSINESS
+                    message: The format of businessName is not valid
+                FORMAT_NATURE_OF_TRADE:
+                  description: The format of natureOfTrade is not valid.
+                  value:
+                    code: FORMAT_NATURE_OF_TRADE
+                    message: The format of natureOfTrade is not valid
+                FORMAT_INCOME_SOURCE:
+                  description: The format of incomeSource is not valid.
+                  value:
+                    code: FORMAT_INCOME_SOURCE
+                    message: The format of incomeSource is not valid
+                FORMAT_LENDER_NAME:
+                  description: The format of lenderName is not valid.
+                  value:
+                    code: FORMAT_LENDER_NAME
+                    message: The format of lenderName is not valid
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: *ref_19
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: *ref_20
+                FORMAT_DATE:
+                  description: The supplied date format is invalid.
+                  value:
+                    code: FORMAT_DATE
+                    message: The supplied date format is invalid
+                FORMAT_CUSTOMER_REF:
+                  description: The format of customer reference is not valid.
+                  value:
+                    code: FORMAT_CUSTOMER_REFERENCE
+                    message: The provided customer reference is not valid
+                RULE_SUBMISSION_FAILED:
+                  description: The submission cannot be completed due to validation failures.
+                  value:
+                    code: RULE_SUBMISSION_FAILED
+                    message: The submission cannot be completed due to validation failures
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+    delete:
+      summary: Delete Other Reliefs
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete reliefs that have been previously submitted. A National Insurance number and tax 
+        year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates a success response.                                                                   |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                  |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful delete.                                                                     |
+      tags:
+        - Other Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+  /individuals/reliefs/foreign/{nino}/{taxYear}:
+    get:
+      summary: Retrieve Foreign Reliefs
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve foreign reliefs. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulate a successful response.                |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | STATEFUL                         | Performs a stateful retrieve.                  |
+      tags:
+        - Foreign Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: *ref_17
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                title: Retrieve Foreign Reliefs
+                description: Allows the retrieval of foreign reliefs
+                type: object
+                properties:
+                  submittedOn:
+                    description: The date the foreign reliefs were added. It must be provided in the format YYYY-MM-DDThh:mm:ssZ
+                    type: string
+                    example: '2019-04-04T01:01:01.000Z'
+                  foreignTaxCreditRelief:
+                    description: Relief on foreign tax paid to another country on overseas income.
+                    type: object
+                    properties:
+                      amount:
+                        description: The amount of Foreign Tax Credit Relief (FTCR). The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - amount
+                    additionalProperties: false
+                  foreignIncomeTaxCreditRelief:
+                    description: Financial details about foreign income tax credit relief.
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        countryCode:
+                          description: A three-letter code that represents a country name.  The value must be ISO 3166-1 alpha-3
+                          type: string
+                          example: FRA
+                        foreignTaxPaid:
+                          description: The amount of foreign Tax Paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '4526.94'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        taxableAmount:
+                          description: The amount of foreign Tax Paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: '2963.95'
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        employmentLumpSum:
+                          description: A boolean indicating whether employment lump sum for foreign tax credit relief has been claimed.
+                          type: boolean
+                          example: 'false'
+                      required:
+                        - countryCode
+                        - employmentLumpSum
+                        - taxableAmount
+                      additionalProperties: false
+                  foreignTaxForFtcrNotClaimed:
+                    description: Object that holds the key value for foreign tax for FTCR not claimed
+                    type: object
+                    properties:
+                      amount:
+                        description: The amount paid on foreign tax not claimed (FTRC). The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '2000.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    required:
+                      - amount
+                    additionalProperties: false
+                required:
+                  - submittedOn
+                additionalProperties: false
+              examples:
+                example-response:
+                  description: Example response
+                  value:
+                    submittedOn: '2019-04-04T01:01:01.000Z'
+                    foreignTaxCreditRelief:
+                      amount: 5000.99
+                    foreignIncomeTaxCreditRelief:
+                      - countryCode: FRA
+                        foreignTaxPaid: 4567.69
+                        taxableAmount: 2853.13
+                        employmentLumpSum: false
+                    foreignTaxForFtcrNotClaimed:
+                      amount: 3456.97
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+    put:
+      summary: Create and Amend Foreign Reliefs
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create and amend foreign reliefs. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulate a success response.                                                                    |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful create or update.                                                           |
+      tags:
+        - Foreign Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: *ref_18
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              title: Amend Foreign Reliefs
+              description: Allows the amendments of foreign reliefs
+              type: object
+              properties:
+                foreignTaxCreditRelief:
+                  description: Relief on foreign tax paid to another country on overseas income.
+                  type: object
+                  properties:
+                    amount:
+                      description: The amount of Foreign Tax Credit Relief (FTCR). The value must be between 0 and 99999999999.99 up to 2 decimal places
+                      type: number
+                      example: '2000.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                  required:
+                    - amount
+                  additionalProperties: false
+                foreignIncomeTaxCreditRelief:
+                  description: Financial details about foreign income tax credit relief.
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      countryCode:
+                        description: A three-letter code that represents a country name. The value must be ISO 3166-1 alpha-3
+                        type: string
+                        example: FRA
+                      foreignTaxPaid:
+                        description: The amount of foreign Tax Paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '1999.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      taxableAmount:
+                        description: The taxable amount paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        type: number
+                        example: '1999.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      employmentLumpSum:
+                        description: A boolean indicating whether employment lump sum for foreign tax credit relief has been claimed.
+                        type: boolean
+                        example: 'false'
+                    required:
+                      - countryCode
+                      - taxableAmount
+                      - employmentLumpSum
+                    additionalProperties: false
+                foreignTaxForFtcrNotClaimed:
+                  description: Object that holds the key value for foreign tax for FTCR not claimed
+                  type: object
+                  properties:
+                    amount:
+                      description: The amount paid on foreign tax not claimed (FTRC). The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      type: number
+                      example: '1999.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                  required:
+                    - amount
+                  additionalProperties: false
+              additionalProperties: false
+            examples:
+              example-1:
+                description: Default Example
+                value:
+                  foreignTaxCreditRelief:
+                    amount: 2000.99
+                  foreignIncomeTaxCreditRelief:
+                    - countryCode: FRA
+                      taxableAmount: 1999.99
+                      foreignTaxPaid: 1999.99
+                      employmentLumpSum: false
+                  foreignTaxForFtcrNotClaimed:
+                    amount: 1999.99
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: *ref_19
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: *ref_20
+                FORMAT_COUNTRY_CODE:
+                  description: The format of the supplied country code is not valid.
+                  value:
+                    code: FORMAT_COUNTRY_CODE
+                    message: The format of the supplied country code is not valid
+                RULE_COUNTRY_CODE:
+                  description: Not a valid ISO 3166-1 alpha-3 country code.
+                  value:
+                    code: RULE_COUNTRY_CODE
+                    message: Not a valid ISO 3166-1 alpha-3 country code
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+    delete:
+      summary: Delete Foreign Reliefs
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete foreign reliefs that have been previously submitted. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulate a success response.                                                                    |
+        | NOT_FOUND                        | Simulates the scenario where the given expenses could not be found.                             |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful delete.                                                                     |
+      tags:
+        - Foreign Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+  /individuals/reliefs/pensions/{nino}/{taxYear}:
+    get:
+      summary: Retrieve Pensions Reliefs
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve tax relief on pension contributions. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulate a successful response.                |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | STATEFUL                         | Performs a stateful retrieve.                  |
+      tags:
+        - Pensions Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: *ref_17
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                title: Retrieve Pensions Reliefs
+                description: Allows the amendments of pensions reliefs
+                type: object
+                properties:
+                  submittedOn:
+                    type: string
+                    description: An ISO-8601 compliant date-time representing when pensions reliefs was submitted on.
+                    example: '2019-04-04T01:01:01.000Z'
+                  pensionReliefs:
+                    type: object
+                    description: Object that holds the key value for tax relief on pension contributions.
+                    properties:
+                      regularPensionContributions:
+                        type: number
+                        description: |-
+                          The amount of regular pension contributions.
+
+                          The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '1999.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      oneOffPensionContributionsPaid:
+                        type: number
+                        description: |-
+                          The amount of the one off pensions contribution.
+
+                          The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '1999.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      retirementAnnuityPayments:
+                        type: number
+                        description: |-
+                          The amount of retirement annuity received.
+
+                          The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '1999.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      paymentToEmployersSchemeNoTaxRelief:
+                        type: number
+                        description: |-
+                          The amount of payments to employers scheme.
+
+                          The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '1999.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                      overseasPensionSchemeContributions:
+                        type: number
+                        description: |-
+                          The amount of overseas pension scheme contributions.
+
+                          The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                        example: '1999.99'
+                        multipleOf: 0.01
+                        minimum: 0
+                        maximum: 99999999999.99
+                    additionalProperties: false
+                required:
+                  - submittedOn
+                  - pensionReliefs
+                additionalProperties: false
+              examples:
+                example-response:
+                  description: Example response
+                  value:
+                    submittedOn: '2020-07-14T10:30:18.000Z'
+                    pensionReliefs:
+                      regularPensionContributions: 1999.99
+                      oneOffPensionContributionsPaid: 1999.99
+                      retirementAnnuityPayments: 1999.99
+                      paymentToEmployersSchemeNoTaxRelief: 1999.99
+                      overseasPensionSchemeContributions: 1999.99
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+    put:
+      summary: Create and Amend Pensions Reliefs
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create and amend pensions reliefs for a tax year. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulate a success response.                                                                    |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful create or update.                                                           |
+      tags:
+        - Pensions Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: *ref_18
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              title: Amend Pensions Reliefs
+              description: Allows the amendments of pensions reliefs
+              type: object
+              properties:
+                pensionReliefs:
+                  type: object
+                  description: Object that holds the key value for pensions reliefs on.
+                  properties:
+                    regularPensionContributions:
+                      type: number
+                      description: |-
+                        The amount of regular pension contributions.
+
+                        The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      example: '1999.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                    oneOffPensionContributionsPaid:
+                      type: number
+                      description: |-
+                        The amount of the one off pensions contribution.
+
+                        The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      example: '1999.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                    retirementAnnuityPayments:
+                      type: number
+                      description: |-
+                        The amount of retirement annuity received.
+
+                        The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      example: '1999.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                    paymentToEmployersSchemeNoTaxRelief:
+                      type: number
+                      description: |-
+                        The amount of payments to employers scheme.
+
+                        The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      example: '1999.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                    overseasPensionSchemeContributions:
+                      type: number
+                      description: |-
+                        The amount of overseas pension scheme contributions.
+
+                        The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                      example: '1999.99'
+                      multipleOf: 0.01
+                      minimum: 0
+                      maximum: 99999999999.99
+                  additionalProperties: false
+              required:
+                - pensionReliefs
+              additionalProperties: false
+            examples:
+              example-1:
+                description: Default Example
+                value:
+                  pensionReliefs:
+                    regularPensionContributions: 1999.99
+                    oneOffPensionContributionsPaid: 1999.99
+                    retirementAnnuityPayments: 1999.99
+                    paymentToEmployersSchemeNoTaxRelief: 1999.99
+                    overseasPensionSchemeContributions: 1999.99
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: *ref_19
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: *ref_20
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+    delete:
+      summary: Delete Pensions Reliefs
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete tax relief on pension contributions for a tax year. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                        |
+        |----------------------------------|-------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulate a successful response.                                                                 |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                  |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window. |
+        | STATEFUL                         | Performs a stateful delete.                                                                     |
+      tags:
+        - Pensions Reliefs
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+  /individuals/reliefs/charitable-giving/{nino}/{taxYear}:
+    get:
+      summary: Retrieve Charitable Giving Tax Relief
+      security:
+        - User-Restricted:
+            - read:self-assessment
+      description: |
+        This endpoint enables you to retrieve charitable giving tax relief for a tax year. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                       |
+        |----------------------------------|------------------------------------------------|
+        | N/A - DEFAULT                    | Simulates a successful response.               |
+        | NOT_FOUND                        | Simulates the scenario where no data is found. |
+        | STATEFUL                         | Performs a stateful retrieve.                  |
+      tags:
+        - Charitable Givings
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *read:self-assessment* scope.
+          schema: *ref_17
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $schema: http://json-schema.org/draft-04/schema#
+                    title: TY 2024-25 or before
+                    description: Charitable Givings
+                    type: object
+                    properties:
+                      giftAidPayments:
+                        description: An object containing Gift Aid payments made to charities for the specified tax year.
+                        type: object
+                        properties:
+                          nonUkCharities:
+                            description: An object containing Gift Aid payments made to non-UK charities for the specified tax year.
+                            type: object
+                            properties:
+                              charityNames:
+                                description: List of all the names of all non-UK charities that received Gift Aid payments. This is mandatory if amount is greater than zero.
+                                type: array
+                                items:
+                                  type: string
+                                  minLength: 1
+                                  maxLength: 75
+                                  pattern: ^[A-Za-z0-9 &'\(\)\*,\-\./@£]{1,75}$
+                              totalAmount:
+                                description: The total amount of Gift Aid payments made to non-UK charities for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                                type: number
+                                multipleOf: 0.01
+                                minimum: 0
+                                maximum: 99999999999.99
+                                example: 2000.99
+                            required:
+                              - totalAmount
+                          totalAmount:
+                            description: The total amount of Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          oneOffAmount:
+                            description: The amount of one-off Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          amountTreatedAsPreviousTaxYear:
+                            description: The amount of Gift Aid payments made within the specified tax year that should be treated as if they were made in the previous tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          amountTreatedAsSpecifiedTaxYear:
+                            description: The amount of Gift Aid payments brought forward from the following tax year, treated as if made in the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                        additionalProperties: false
+                      gifts:
+                        description: An object containing gifts made to charities for the specified tax year.
+                        type: object
+                        properties:
+                          nonUkCharities:
+                            description: An object containing gifts made to non-UK charities for the specified tax year.
+                            type: object
+                            properties:
+                              charityNames:
+                                description: List of all the names of all non-UK charities that received gifts. This is mandatory if amount is greater than zero.
+                                type: array
+                                items:
+                                  type: string
+                                  minLength: 1
+                                  maxLength: 75
+                                  pattern: ^[A-Za-z0-9 &'\(\)\*,\-\./@£]{1,75}$
+                              totalAmount:
+                                description: The total value of shares, securities or land and buildings gifted to non-UK charities for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                                type: number
+                                multipleOf: 0.01
+                                minimum: 0
+                                maximum: 99999999999.99
+                                example: 2000.99
+                            required:
+                              - totalAmount
+                          landAndBuildings:
+                            description: The value of land and buildings gifted to charity for the specified tax year. This should include any costs of the gift or sale, such as legal or valuer's fees. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          sharesOrSecurities:
+                            description: The value of shares or securities gifted to charity for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                        additionalProperties: false
+                    additionalProperties: false
+                  - $schema: http://json-schema.org/draft-04/schema#
+                    title: TY 2025-26 onwards
+                    description: Charitable Givings
+                    type: object
+                    properties:
+                      giftAidPayments:
+                        description: An object containing Gift Aid payments made to charities for the specified tax year.
+                        type: object
+                        properties:
+                          totalAmount:
+                            description: The total amount of Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          oneOffAmount:
+                            description: The amount of one-off Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          amountTreatedAsPreviousTaxYear:
+                            description: The amount of Gift Aid payments made within the specified tax year that should be treated as if they were made in the previous tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          amountTreatedAsSpecifiedTaxYear:
+                            description: The amount of Gift Aid payments brought forward from the following tax year, treated as if made in the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                        additionalProperties: false
+                      gifts:
+                        description: An object containing gifts made to charities for the specified tax year.
+                        type: object
+                        properties:
+                          landAndBuildings:
+                            description: The value of land and buildings gifted to charity for the specified tax year. This should include any costs of the gift or sale, such as legal or valuer's fees. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                          sharesOrSecurities:
+                            description: The value of shares or securities gifted to charity for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                            type: number
+                            example: 2000.99
+                            multipleOf: 0.01
+                            minimum: 0
+                            maximum: 99999999999.99
+                        additionalProperties: false
+                    additionalProperties: false
+              examples:
+                TY 2024-25 or before:
+                  value:
+                    giftAidPayments:
+                      nonUkCharities:
+                        charityNames:
+                          - non-UK charity 1
+                          - non-UK charity 2
+                        totalAmount: 1000.12
+                      totalAmount: 1000.12
+                      oneOffAmount: 1000.12
+                      amountTreatedAsPreviousTaxYear: 1000.12
+                      amountTreatedAsSpecifiedTaxYear: 1000.12
+                    gifts:
+                      nonUkCharities:
+                        charityNames:
+                          - non-UK charity 1
+                          - non-UK charity 2
+                        totalAmount: 1000.12
+                      landAndBuildings: 1000.12
+                      sharesOrSecurities: 1000.12
+                TY 2025-26 onwards:
+                  value:
+                    giftAidPayments:
+                      totalAmount: 1000.12
+                      oneOffAmount: 1000.12
+                      amountTreatedAsPreviousTaxYear: 1000.12
+                      amountTreatedAsSpecifiedTaxYear: 1000.12
+                    gifts:
+                      landAndBuildings: 1000.12
+                      sharesOrSecurities: 1000.12
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+    put:
+      summary: Create and Amend Charitable Giving Tax Relief
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to create and amend charitable giving tax relief for a tax year. A National Insurance number and tax year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.  
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                       |
+        |----------------------------------|------------------------------------------------------------------------------------------------|
+        | N/A - DEFAULT                    | Simulate success response.                                                                     |
+        | NOT_FOUND                        | Simulates the scenario where no income source was found.                                       |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window.|
+        | STATEFUL                         | Performs a stateful create or update.                                                          |
+      tags:
+        - Charitable Givings
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Content-Type
+          in: header
+          description: |
+            Specifies the format of the request body, which must be JSON.
+          schema: *ref_18
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $schema: http://json-schema.org/draft-04/schema#
+                  title: TY 2024-25 or before
+                  type: object
+                  properties:
+                    giftAidPayments:
+                      description: An object containing Gift Aid payments made to charities for the specified tax year.
+                      type: object
+                      properties:
+                        nonUkCharities:
+                          description: An object containing Gift Aid payments made to charities for the specified tax year.
+                          type: object
+                          properties:
+                            charityNames:
+                              description: List of all the names of all non-UK charities that received Gift Aid payments. This is mandatory if amount is greater than zero.
+                              type: array
+                              items:
+                                type: string
+                                minLength: 1
+                                maxLength: 75
+                                pattern: ^[A-Za-z0-9 &'\(\)\*,\-\./@£]{1,75}$
+                            totalAmount:
+                              description: The total amount of Gift Aid payments made to non-UK charities for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                              type: number
+                              multipleOf: 0.01
+                              minimum: 0
+                              maximum: 99999999999.99
+                              example: 2000.99
+                          required:
+                            - totalAmount
+                        totalAmount:
+                          description: The total amount of Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        oneOffAmount:
+                          description: The amount of one-off Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        amountTreatedAsPreviousTaxYear:
+                          description: The amount of Gift Aid payments made within the specified tax year that should be treated as if they were made in the previous tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        amountTreatedAsSpecifiedTaxYear:
+                          description: The amount of Gift Aid payments brought forward from the following tax year, treated as if made in the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      additionalProperties: false
+                    gifts:
+                      description: An object containing gifts made to charities for the specified tax year.
+                      type: object
+                      properties:
+                        nonUkCharities:
+                          description: An object containing gifts made to non-UK charities for the specified tax year.
+                          type: object
+                          properties:
+                            charityNames:
+                              description: List of all the names of all non-UK charities that received gifts. This is mandatory if amount is greater than zero.
+                              type: array
+                              items:
+                                type: string
+                                minLength: 1
+                                maxLength: 75
+                                pattern: ^[A-Za-z0-9 &'\(\)\*,\-\./@£]{1,75}$
+                            totalAmount:
+                              description: The total value of shares, securities or land and buildings gifted to non-UK charities for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                              type: number
+                              multipleOf: 0.01
+                              minimum: 0
+                              maximum: 99999999999.99
+                              example: 2000.99
+                          required:
+                            - totalAmount
+                        landAndBuildings:
+                          description: The value of land and buildings gifted to charity for the specified tax year. This should include any costs of the gift or sale, such as legal or valuer's fees. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        sharesOrSecurities:
+                          description: The value of shares or securities gifted to charity for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      additionalProperties: false
+                  additionalProperties: false
+                - $schema: http://json-schema.org/draft-04/schema#
+                  title: TY 2025-26 onwards
+                  type: object
+                  properties:
+                    giftAidPayments:
+                      description: An object containing Gift Aid payments made to charities for the specified tax year.
+                      type: object
+                      properties:
+                        totalAmount:
+                          description: The total amount of Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        oneOffAmount:
+                          description: The amount of one-off Gift Aid payments made for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        amountTreatedAsPreviousTaxYear:
+                          description: The amount of Gift Aid payments made within the specified tax year that should be treated as if they were made in the previous tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        amountTreatedAsSpecifiedTaxYear:
+                          description: The amount of Gift Aid payments brought forward from the following tax year, treated as if made in the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      additionalProperties: false
+                    gifts:
+                      description: An object containing gifts made to charities for the specified tax year.
+                      type: object
+                      properties:
+                        landAndBuildings:
+                          description: The value of land and buildings gifted to charity for the specified tax year. This should include any costs of the gift or sale, such as legal or valuer's fees. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                        sharesOrSecurities:
+                          description: The value of shares or securities gifted to charity for the specified tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
+                          type: number
+                          example: 2000.99
+                          multipleOf: 0.01
+                          minimum: 0
+                          maximum: 99999999999.99
+                      additionalProperties: false
+                  additionalProperties: false
+            examples:
+              TY 2024-25 or before:
+                value:
+                  giftAidPayments:
+                    nonUkCharities:
+                      charityNames:
+                        - non-UK charity 1
+                        - non-UK charity 2
+                      totalAmount: 1000.12
+                    totalAmount: 1000.12
+                    oneOffAmount: 1000.12
+                    amountTreatedAsPreviousTaxYear: 1000.12
+                    amountTreatedAsSpecifiedTaxYear: 1000.12
+                  gifts:
+                    nonUkCharities:
+                      charityNames:
+                        - non-UK charity 1
+                        - non-UK charity 2
+                      totalAmount: 1000.12
+                    landAndBuildings: 1000.12
+                    sharesOrSecurities: 1000.12
+              TY 2025-26 onwards:
+                value:
+                  giftAidPayments:
+                    totalAmount: 1000.12
+                    oneOffAmount: 1000.12
+                    amountTreatedAsPreviousTaxYear: 1000.12
+                    amountTreatedAsSpecifiedTaxYear: 1000.12
+                  gifts:
+                    landAndBuildings: 1000.12
+                    sharesOrSecurities: 1000.12
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                FORMAT_VALUE:
+                  description: One or more values have been added with the incorrect format.
+                  value: *ref_19
+                FORMAT_STRING:
+                  description: One or more strings have been added with the incorrect format.
+                  value:
+                    code: FORMAT_STRING
+                    message: One or more strings have been added with the incorrect format
+                RULE_GIFT_AID_NON_UK_AMOUNT_WITHOUT_NAMES:
+                  description: Non-UK charity Gift Aid amount supplied without the non-UK Gift Aid charity names.
+                  value:
+                    code: RULE_GIFT_AID_NON_UK_AMOUNT_WITHOUT_NAMES
+                    message: Non-UK charity Gift Aid amount supplied without the non-UK Gift Aid charity names
+                RULE_GIFTS_NON_UK_AMOUNT_WITHOUT_NAMES:
+                  description: Non-UK gifts amount supplied without non-UK gifts charity names.
+                  value:
+                    code: RULE_GIFTS_NON_UK_AMOUNT_WITHOUT_NAMES
+                    message: Non-UK gifts amount supplied without non-UK gifts charity names
+                RULE_INCORRECT_OR_EMPTY_BODY_SUBMITTED:
+                  description: An empty or non-matching body was submitted.
+                  value: *ref_20
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+    delete:
+      summary: Delete Charitable Giving Tax Relief
+      security:
+        - User-Restricted:
+            - write:self-assessment
+      description: |
+        This endpoint enables you to delete charitable giving tax relief for a tax year. A National Insurance number and tax 
+        year must be provided.
+
+        ### Test data
+        Scenario simulation using Gov-Test-Scenario headers is only available in the sandbox environment.  
+
+        | Header Value (Gov-Test-Scenario) | Scenario                                                                                                                                                    |
+        |----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+        | DELETE                           | Simulates success response.                                                                                                                                 |
+        | NOT_FOUND                        | Simulates the scenario where no data is found.                                                                                                              |
+        | OUTSIDE_AMENDMENT_WINDOW         | Simulates the scenario where request cannot be completed as it is outside the amendment window.                                                             |
+        | STATEFUL_DELETE                  | Performs a stateful delete. <br></br>This Gov-Test-Scenario is no longer available in this version. It has been replaced by the STATEFUL Gov-Test-Scenario. |
+        | STATEFUL                         | Performs a stateful delete.                                                                                                                                 |
+      tags:
+        - Charitable Givings
+      parameters:
+        - name: nino
+          in: path
+          description: |
+            National Insurance number, in the format `AA999999A`
+          schema: *ref_3
+          required: true
+        - name: taxYear
+          in: path
+          description: |
+            The tax year to which the data applies. For example: 2022-23. The start year and end year must not span two tax years. The minimum tax year is 2022-23. No gaps are allowed, for example, 2022-24 is not valid. (The minimum tax year in Sandbox is 2021-22.)
+          schema: *ref_4
+          required: true
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format and the version of the API to be used.
+          schema: *ref_5
+          required: true
+        - name: Authorization
+          in: header
+          description: |
+            An OAuth 2.0 Bearer Token with the *write:self-assessment* scope.
+          schema: *ref_14
+          required: true
+        - name: Gov-Test-Scenario
+          in: header
+          description: |
+            Only in sandbox environment. See Test Data table for all header values.
+          schema: *ref_6
+          required: false
+      responses:
+        '204':
+          description: Success(No Content)
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+        '400':
+          description: Bad request
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                FORMAT_NINO:
+                  description: The format of the supplied NINO field is not valid.
+                  value: *ref_7
+                FORMAT_TAX_YEAR:
+                  description: The format of the supplied taxYear field is not valid.
+                  value: *ref_8
+                RULE_TAX_YEAR_NOT_SUPPORTED:
+                  description: |
+                    The specified tax year is not supported.
+                    Either the tax year specified is before the minimum tax year value,
+                    or it is after the maximum tax year value.
+                  value: *ref_9
+                RULE_TAX_YEAR_RANGE_INVALID:
+                  description: Tax year range invalid. A tax year range of one year is required.
+                  value: *ref_11
+                RULE_OUTSIDE_AMENDMENT_WINDOW:
+                  description: |
+                    The request cannot be completed as you are outside the amendment window.
+                  value: *ref_15
+                RULE_INCORRECT_GOV_TEST_SCENARIO:
+                  description: |
+                    The request did not match any available Sandbox data. Check that the supplied Gov-Test-Scenario is correct for this endpoint version. This error will only be returned in the Sandbox environment.
+                  value: *ref_12
+        '403':
+          description: Forbidden
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                CLIENT_OR_AGENT_NOT_AUTHORISED:
+                  description: |
+                    The client and/or agent is not authorised. This is normally because:
+                    the client is not subscribed to MTD, the agent is not subscribed to Agent Services,
+                    or the client has not authorised the agent to act on their behalf.
+                  value: *ref_13
+        '404':
+          description: Not Found
+          headers:
+            X-CorrelationId:
+              in: header
+              type: string
+              description: |
+                Unique ID for operation tracking
+                String, 36 characters.
+              schema: *ref_0
+              required: true
+          content:
+            application/json:
+              schema:
+                description: Error Response
+                type: object
+                properties: *ref_1
+                required: *ref_2
+              examples:
+                MATCHING_RESOURCE_NOT_FOUND:
+                  description: The matching resource was not found.
+                  value: *ref_16
+components:
+  securitySchemes:
+    User-Restricted:
+      type: oauth2
+      description: HMRC supports OAuth 2.0 for authenticating [User-restricted](https://developer.service.hmrc.gov.uk/api-documentation/docs/authorisation/user-restricted-endpoints) API requests
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.service.hmrc.gov.uk/oauth/authorize
+          tokenUrl: https://api.service.hmrc.gov.uk/oauth/token
+          refreshUrl: https://api.service.hmrc.gov.uk/oauth/refresh
+          scopes:
+            write:self-assessment: Grant write access
+            read:self-assessment: Grant read access
