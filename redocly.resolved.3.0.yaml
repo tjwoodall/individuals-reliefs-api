@@ -138,7 +138,8 @@ paths:
                     type: object
                     properties:
                       submittedOn:
-                        description: The date the investment relief was added. It must be provided in the format YYYY-MM-DDThh:mm:ss.SSSZ
+                        description: The date the investment relief was added. It must be provided in the format `YYYY-MM-DDThh:mm:ss.SSSZ`
+                        format: date-time
                         type: string
                         example: '2019-04-04T01:01:01.000Z'
                       vctSubscription:
@@ -161,8 +162,9 @@ paths:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
                               type: string
+                              format: date
                               example: '2018-04-06'
                             amountInvested:
                               description: |-
@@ -170,7 +172,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -180,7 +182,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -207,13 +209,14 @@ paths:
                             knowledgeIntensive:
                               description: Companies that are carrying out research, development or innovation.
                               type: boolean
-                              example: 'true'
+                              example: true
                             dateOfInvestment:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
                               type: string
+                              format: date
                               example: '2018-04-06'
                             amountInvested:
                               description: |-
@@ -221,7 +224,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -231,7 +234,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -259,8 +262,9 @@ paths:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
                               type: string
+                              format: date
                               example: '2018-04-06'
                             amountInvested:
                               description: |-
@@ -268,7 +272,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -278,7 +282,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -306,8 +310,9 @@ paths:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
                               type: string
+                              format: date
                               example: '2018-04-06'
                             amountInvested:
                               description: |-
@@ -315,7 +320,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -325,7 +330,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -353,7 +358,8 @@ paths:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
+                              format: date
                               type: string
                               example: '2018-04-06'
                             amountInvested:
@@ -362,7 +368,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -372,7 +378,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -388,7 +394,8 @@ paths:
                     type: object
                     properties:
                       submittedOn:
-                        description: The date the investment relief was added. It must be provided in the format YYYY-MM-DDThh:mm:ss.SSSZ
+                        description: The date the investment relief was added. It must be provided in the format `YYYY-MM-DDThh:mm:ss.SSSZ`
+                        format: date-time
                         type: string
                         example: '2019-04-04T01:01:01.000Z'
                       vctSubscription:
@@ -411,8 +418,9 @@ paths:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
                               type: string
+                              format: date
                               example: '2018-04-06'
                             amountInvested:
                               description: |-
@@ -420,7 +428,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -430,7 +438,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -458,12 +466,13 @@ paths:
                             knowledgeIntensive:
                               description: Companies that are carrying out research, development or innovation.
                               type: boolean
-                              example: 'true'
+                              example: true
                             dateOfInvestment:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
+                              format: date
                               type: string
                               example: '2018-04-06'
                             amountInvested:
@@ -472,7 +481,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -482,7 +491,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -513,7 +522,8 @@ paths:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
+                              format: date
                               type: string
                               example: '2018-04-06'
                             amountInvested:
@@ -522,7 +532,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -532,7 +542,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -560,7 +570,8 @@ paths:
                               description: |-
                                 The date of the investment.
 
-                                Date in the format YYYY-MM-DD
+                                Date in the format `YYYY-MM-DD`
+                              format: date
                               type: string
                               example: '2018-04-06'
                             amountInvested:
@@ -569,7 +580,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -579,7 +590,7 @@ paths:
 
                                 The value must be between 0 and 99999999999.99 up to 2 decimal places.
                               type: number
-                              example: '2000.99'
+                              example: 2000.99
                               multipleOf: 0.01
                               minimum: 0
                               maximum: 99999999999.99
@@ -797,20 +808,21 @@ paths:
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: VCT fund
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -837,22 +849,23 @@ paths:
                           knowledgeIntensive:
                             description: A boolean indicating whether companies are carrying out research, development or innovation.
                             type: boolean
-                            example: 'true'
+                            example: true
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -877,20 +890,21 @@ paths:
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: CI X
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount of relief being claimed for the year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -915,20 +929,21 @@ paths:
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: Company Inc
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -953,20 +968,21 @@ paths:
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: SE Inc
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD.
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`.
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -997,20 +1013,21 @@ paths:
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: VCT fund
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -1038,22 +1055,23 @@ paths:
                           knowledgeIntensive:
                             description: A boolean indicating whether companies are carrying out research, development or innovation.
                             type: boolean
-                            example: 'true'
+                            example: true
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -1081,20 +1099,21 @@ paths:
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: CI X
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount of relief being claimed for the year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -1119,20 +1138,21 @@ paths:
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: Company Inc
                           dateOfInvestment:
-                            description: The date of the investment. Date in the format YYYY-MM-DD
+                            description: The date of the investment. Date in the format `YYYY-MM-DD`
+                            format: date
                             type: string
                             example: '2018-04-06'
                           amountInvested:
                             description: The total amount invested. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
                           reliefClaimed:
                             description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                             type: number
-                            example: '2000.99'
+                            example: 2000.99
                             multipleOf: 0.01
                             minimum: 0
                             maximum: 99999999999.99
@@ -1484,7 +1504,8 @@ paths:
                 type: object
                 properties:
                   submittedOn:
-                    description: The date the other reliefs was added. It must be provided in the format YYYY-MM-DDThh:mm:ssZ
+                    description: The date the other reliefs was added. It must be provided in the format `YYYY-MM-DDThh:mm:ss.SSSZ`
+                    format: date-time
                     type: string
                     example: '2019-04-04T01:01:01.000Z'
                   nonDeductibleLoanInterest:
@@ -1499,7 +1520,7 @@ paths:
                       reliefClaimed:
                         description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -1518,7 +1539,7 @@ paths:
                       reliefClaimed:
                         description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -1537,7 +1558,7 @@ paths:
                       amount:
                         description: The amount of relief claimed on qualifying shares and securities. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -1553,21 +1574,26 @@ paths:
                         customerReference:
                           description: A reference or friendly name used by the customer.
                           type: string
+                          pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                           example: INPOLY123A
                         exSpouseName:
                           description: The name of the ex-spouse who receives the payment.
                           type: string
+                          example: Hilda
+                          minLength: 1
+                          maxLength: 105
                         exSpouseDateOfBirth:
                           description: |-
                             The date ex-spouse was born.
 
-                            Date in the format: YYYY-MM-DD
+                            Date in the format: `YYYY-MM-DD`
                           type: string
+                          format: date
                           example: '2018-04-06'
                         amount:
                           description: The amount paid to a former spouse or civil partner who was born before 6 April 1935. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                           type: number
-                          example: '2000.99'
+                          example: 2000.99
                           multipleOf: 0.01
                           minimum: 0
                           maximum: 99999999999.99
@@ -1589,8 +1615,9 @@ paths:
                           description: The name of the business that has ceased trading.
                           type: string
                         dateBusinessCeased:
-                          description: 'The date the business ceased trading. Date in the format: YYYY-MM-DD'
+                          description: 'The date the business ceased trading. Date in the format: `YYYY-MM-DD`'
                           type: string
+                          format: date
                           example: '2018-04-06'
                         natureOfTrade:
                           description: The trading nature of the business.
@@ -1602,7 +1629,7 @@ paths:
                         amount:
                           description: The amount which can be deducted from chargeable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                           type: number
-                          example: '2000.99'
+                          example: 2000.99
                           multipleOf: 0.01
                           minimum: 0
                           maximum: 99999999999.99
@@ -1621,7 +1648,7 @@ paths:
                       reliefClaimed:
                         description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -1645,7 +1672,7 @@ paths:
                         reliefClaimed:
                           description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                           type: number
-                          example: '2000.99'
+                          example: 2000.99
                           multipleOf: 0.01
                           minimum: 0
                           maximum: 99999999999.99
@@ -1821,11 +1848,12 @@ paths:
                     customerReference:
                       description: A reference or friendly name used by the customer.
                       type: string
+                      pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                       example: INPOLY123A
                     reliefClaimed:
                       description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       type: number
-                      example: '2000.99'
+                      example: 2000.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -1844,7 +1872,7 @@ paths:
                     reliefClaimed:
                       description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       type: number
-                      example: '2000.99'
+                      example: 2000.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -1863,7 +1891,7 @@ paths:
                     amount:
                       description: The amount of relief claimed on qualifying shares and securities. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       type: number
-                      example: '2000.99'
+                      example: 2000.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -1884,14 +1912,18 @@ paths:
                       exSpouseName:
                         description: The name of the ex-spouse who receives the payment.
                         type: string
+                        example: Hilda
+                        minLength: 1
+                        maxLength: 105
                       exSpouseDateOfBirth:
-                        description: The date the ex-spouse was born.
+                        description: 'The date the ex-spouse was born. Date in the format: `YYYY-MM-DD`'
                         type: string
+                        format: date
                         example: '2018-04-06'
                       amount:
                         description: The amount paid to a former spouse or civil partner who was born before 6 April 1935. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -1911,21 +1943,27 @@ paths:
                         example: INPOLY123A
                       businessName:
                         description: The name of the business that has ceased trading.
+                        minLength: 1
+                        maxLength: 105
                         type: string
                       dateBusinessCeased:
-                        description: 'The date the business ceased trading. Date in the format: YYYY-MM-DD'
+                        description: 'The date the business ceased trading. Date in the format: `YYYY-MM-DD`'
                         type: string
+                        format: date
                         example: '2018-04-06'
                       natureOfTrade:
                         description: The trading nature of the business.
+                        pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         type: string
                       incomeSource:
                         description: Income source identifier or UTR (Unique Taxpayer Reference).
+                        minLength: 1
+                        maxLength: 105
                         type: string
                       amount:
                         description: The amount which can be deducted from chargeable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -1944,7 +1982,7 @@ paths:
                     reliefClaimed:
                       description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       type: number
-                      example: '2000.99'
+                      example: 2000.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -1964,11 +2002,13 @@ paths:
                         example: INPOLY123A
                       lenderName:
                         description: The name of the individual, public group, private group, or financial institution that made the funds available.
+                        minLength: 1
+                        maxLength: 105
                         type: string
                       reliefClaimed:
                         description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -2329,7 +2369,8 @@ paths:
                 type: object
                 properties:
                   submittedOn:
-                    description: The date the foreign reliefs were added. It must be provided in the format YYYY-MM-DDThh:mm:ssZ
+                    description: The date the foreign reliefs were added. It must be provided in the format `YYYY-MM-DDThh:mm:ss.SSSZ`
+                    format: date-time
                     type: string
                     example: '2019-04-04T01:01:01.000Z'
                   foreignTaxCreditRelief:
@@ -2339,7 +2380,7 @@ paths:
                       amount:
                         description: The amount of Foreign Tax Credit Relief (FTCR). The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -2353,27 +2394,27 @@ paths:
                       type: object
                       properties:
                         countryCode:
-                          description: A three-letter code that represents a country name.  The value must be ISO 3166-1 alpha-3
+                          description: A three-letter code that represents a country name. The value must be ISO 3166-1 alpha-3
                           type: string
                           example: FRA
                         foreignTaxPaid:
                           description: The amount of foreign Tax Paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                           type: number
-                          example: '4526.94'
+                          example: 4526.94
                           multipleOf: 0.01
                           minimum: 0
                           maximum: 99999999999.99
                         taxableAmount:
                           description: The amount of foreign Tax Paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                           type: number
-                          example: '2963.95'
+                          example: 2963.95
                           multipleOf: 0.01
                           minimum: 0
                           maximum: 99999999999.99
                         employmentLumpSum:
                           description: A boolean indicating whether employment lump sum for foreign tax credit relief has been claimed.
                           type: boolean
-                          example: 'false'
+                          example: false
                       required:
                         - countryCode
                         - employmentLumpSum
@@ -2386,7 +2427,7 @@ paths:
                       amount:
                         description: The amount paid on foreign tax not claimed (FTRC). The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '2000.99'
+                        example: 2000.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -2557,7 +2598,7 @@ paths:
                     amount:
                       description: The amount of Foreign Tax Credit Relief (FTCR). The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       type: number
-                      example: '2000.99'
+                      example: 2000.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -2577,21 +2618,21 @@ paths:
                       foreignTaxPaid:
                         description: The amount of foreign Tax Paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '1999.99'
+                        example: 1999.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
                       taxableAmount:
                         description: The taxable amount paid on foreign income tax credit relief. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
-                        example: '1999.99'
+                        example: 1999.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
                       employmentLumpSum:
                         description: A boolean indicating whether employment lump sum for foreign tax credit relief has been claimed.
                         type: boolean
-                        example: 'false'
+                        example: false
                     required:
                       - countryCode
                       - taxableAmount
@@ -2604,7 +2645,7 @@ paths:
                     amount:
                       description: The amount paid on foreign tax not claimed (FTRC). The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       type: number
-                      example: '1999.99'
+                      example: 1999.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -2935,7 +2976,8 @@ paths:
                 properties:
                   submittedOn:
                     type: string
-                    description: An ISO-8601 compliant date-time representing when pensions reliefs was submitted on.
+                    description: An ISO-8601 compliant date-time representing when pensions reliefs was submitted on. It must be provided in the format `YYYY-MM-DDThh:mm:ss.SSSZ`
+                    format: date-time
                     example: '2019-04-04T01:01:01.000Z'
                   pensionReliefs:
                     type: object
@@ -2947,7 +2989,7 @@ paths:
                           The amount of regular pension contributions.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '1999.99'
+                        example: 1999.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -2957,7 +2999,7 @@ paths:
                           The amount of the one off pensions contribution.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '1999.99'
+                        example: 1999.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -2967,7 +3009,7 @@ paths:
                           The amount of retirement annuity received.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '1999.99'
+                        example: 1999.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -2977,7 +3019,7 @@ paths:
                           The amount of payments to employers scheme.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '1999.99'
+                        example: 1999.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -2987,7 +3029,7 @@ paths:
                           The amount of overseas pension scheme contributions.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                        example: '1999.99'
+                        example: 1999.99
                         multipleOf: 0.01
                         minimum: 0
                         maximum: 99999999999.99
@@ -3160,7 +3202,7 @@ paths:
                         The amount of regular pension contributions.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                      example: '1999.99'
+                      example: 1999.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -3170,7 +3212,7 @@ paths:
                         The amount of the one off pensions contribution.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                      example: '1999.99'
+                      example: 1999.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -3180,7 +3222,7 @@ paths:
                         The amount of retirement annuity received.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                      example: '1999.99'
+                      example: 1999.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -3190,7 +3232,7 @@ paths:
                         The amount of payments to employers scheme.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                      example: '1999.99'
+                      example: 1999.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
@@ -3200,7 +3242,7 @@ paths:
                         The amount of overseas pension scheme contributions.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
-                      example: '1999.99'
+                      example: 1999.99
                       multipleOf: 0.01
                       minimum: 0
                       maximum: 99999999999.99
