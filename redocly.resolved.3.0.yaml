@@ -149,12 +149,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             name:
-                              description: The name of the investment or fund.
+                              description: The name of the investment or fund. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: VCT fund
@@ -197,12 +197,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             name:
-                              description: The name of the investment or fund
+                              description: The name of the investment or fund. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: EIS fund
@@ -249,12 +249,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             name:
-                              description: The name of the investment or fund.
+                              description: The name of the investment or fund. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: CI X
@@ -297,12 +297,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             companyName:
-                              description: The name of the company holding the investment.
+                              description: The name of the company holding the investment. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: Company Inc
@@ -345,12 +345,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             socialEnterpriseName:
-                              description: The name of the investment or fund.
+                              description: The name of the investment or fund. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: SE Inc
@@ -405,12 +405,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             name:
-                              description: The name of the investment or fund.
+                              description: The name of the investment or fund. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: VCT fund
@@ -454,12 +454,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             name:
-                              description: The name of the investment or fund
+                              description: The name of the investment or fund. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: EIS fund
@@ -509,12 +509,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             name:
-                              description: The name of the investment or fund.
+                              description: The name of the investment or fund. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: CI X
@@ -557,12 +557,12 @@ paths:
                           type: object
                           properties:
                             uniqueInvestmentRef:
-                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                              description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                               example: '12345678'
                             companyName:
-                              description: The name of the company holding the investment.
+                              description: The name of the company holding the investment. Must not be empty or contain only whitespace.
                               type: string
                               pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                               example: Company Inc
@@ -798,12 +798,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           name:
-                            description: The name of the investment or fund.
+                            description: The name of the investment or fund. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: VCT fund
@@ -837,12 +837,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           name:
-                            description: The name of the investment or fund
+                            description: The name of the investment or fund. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: EIS fund
@@ -880,12 +880,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           name:
-                            description: The name of the investment or fund.
+                            description: The name of the investment or fund. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: CI X
@@ -919,12 +919,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           companyName:
-                            description: The name of the company holding the investment.
+                            description: The name of the company holding the investment. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: Company Inc
@@ -958,12 +958,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           socialEnterpriseName:
-                            description: The name of the investment or fund.
+                            description: The name of the investment or fund. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: SE Inc
@@ -1003,12 +1003,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           name:
-                            description: The name of the investment or fund.
+                            description: The name of the investment or fund. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: VCT fund
@@ -1043,12 +1043,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           name:
-                            description: The name of the investment or fund
+                            description: The name of the investment or fund. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: EIS fund
@@ -1089,12 +1089,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           name:
-                            description: The name of the investment or fund.
+                            description: The name of the investment or fund. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: CI X
@@ -1128,12 +1128,12 @@ paths:
                         type: object
                         properties:
                           uniqueInvestmentRef:
-                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate.
+                            description: The Unique Investment Reference (UIR) or the name of the authorising tax office as shown on the certificate. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                             example: '12345678'
                           companyName:
-                            description: The name of the company holding the investment.
+                            description: The name of the company holding the investment. Must not be empty or contain only whitespace.
                             type: string
                             pattern: ^[0-9a-zA-Z{À-˿'}\- _&`():.'^]{1,105}$
                             example: Company Inc
@@ -1509,11 +1509,11 @@ paths:
                     type: string
                     example: '2019-04-04T01:01:01.000Z'
                   nonDeductibleLoanInterest:
-                    description: Details of non-deductible loan interest claimed
+                    description: Details of non-deductible loan interest claimed. Must not be empty or contain only whitespace.
                     type: object
                     properties:
                       customerReference:
-                        description: A reference or friendly name used by the customer.
+                        description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                         type: string
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         example: INPOLY123A
@@ -1528,11 +1528,11 @@ paths:
                       - reliefClaimed
                     additionalProperties: false
                   payrollGiving:
-                    description: Details of payroll giving relief claimed.
+                    description: Details of payroll giving relief claimed. Must not be empty or contain only whitespace.
                     type: object
                     properties:
                       customerReference:
-                        description: A reference or friendly name used by the customer.
+                        description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                         type: string
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         example: INPOLY123A
@@ -1551,7 +1551,7 @@ paths:
                     type: object
                     properties:
                       customerReference:
-                        description: A reference or friendly name used by the customer.
+                        description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                         type: string
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         example: INPOLY123A
@@ -1572,13 +1572,14 @@ paths:
                       type: object
                       properties:
                         customerReference:
-                          description: A reference or friendly name used by the customer.
+                          description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                           type: string
                           pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                           example: INPOLY123A
                         exSpouseName:
-                          description: The name of the ex-spouse who receives the payment.
+                          description: The name of the ex-spouse who receives the payment. Must not be empty or contain only whitespace.
                           type: string
+                          pattern: ^.{1,105}$
                           example: Hilda
                           minLength: 1
                           maxLength: 105
@@ -1607,12 +1608,13 @@ paths:
                       type: object
                       properties:
                         customerReference:
-                          description: A reference or friendly name used by the customer.
+                          description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                           type: string
                           pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                           example: INPOLY123A
                         businessName:
-                          description: The name of the business that has ceased trading.
+                          description: The name of the business that has ceased trading. Must not be empty or contain only whitespace.
+                          pattern: ^.{1,105}$
                           type: string
                         dateBusinessCeased:
                           description: 'The date the business ceased trading. Date in the format: `YYYY-MM-DD`'
@@ -1620,11 +1622,12 @@ paths:
                           format: date
                           example: '2018-04-06'
                         natureOfTrade:
-                          description: The trading nature of the business.
+                          description: The trading nature of the business. Must not be empty or contain only whitespace.
                           type: string
                           pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         incomeSource:
-                          description: Income source identifier or UTR (Unique Taxpayer Reference).
+                          description: Income source identifier or UTR (Unique Taxpayer Reference). Must not be empty or contain only whitespace.
+                          pattern: ^.{1,105}$
                           type: string
                         amount:
                           description: The amount which can be deducted from chargeable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.
@@ -1641,7 +1644,7 @@ paths:
                     type: object
                     properties:
                       customerReference:
-                        description: A reference or friendly name used by the customer.
+                        description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                         type: string
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         example: INPOLY123A
@@ -1656,19 +1659,20 @@ paths:
                       - reliefClaimed
                     additionalProperties: false
                   qualifyingLoanInterestPayments:
-                    description: Details of qualifying loan interest payments made.
+                    description: Details of qualifying loan interest payments made. Must not be empty or contain only whitespace.
                     type: array
                     items:
                       type: object
                       properties:
                         customerReference:
-                          description: A reference or friendly name used by the customer.
+                          description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                           type: string
                           pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                           example: INPOLY123A
                         lenderName:
-                          description: The name of the individual, public group, private group, or financial institution that made the funds available.
+                          description: The name of the individual, public group, private group, or financial institution that made the funds available. Must not be empty or contain only whitespace.
                           type: string
+                          pattern: ^.{1,105}$
                         reliefClaimed:
                           description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                           type: number
@@ -1846,7 +1850,7 @@ paths:
                   type: object
                   properties:
                     customerReference:
-                      description: A reference or friendly name used by the customer.
+                      description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                       type: string
                       pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                       example: INPOLY123A
@@ -1865,7 +1869,7 @@ paths:
                   type: object
                   properties:
                     customerReference:
-                      description: A reference or friendly name used by the customer.
+                      description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                       type: string
                       pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                       example: INPOLY123A
@@ -1884,7 +1888,7 @@ paths:
                   type: object
                   properties:
                     customerReference:
-                      description: A reference or friendly name used by the customer.
+                      description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                       type: string
                       pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                       example: INPOLY123A
@@ -1899,19 +1903,20 @@ paths:
                     - amount
                   additionalProperties: false
                 maintenancePayments:
-                  description: Details of maintenance payments made to an ex-spouse.
+                  description: Details of maintenance payments made to an ex-spouse. Must not be empty or contain only whitespace.
                   type: array
                   items:
                     type: object
                     properties:
                       customerReference:
-                        description: A reference or friendly name used by the customer.
+                        description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                         type: string
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         example: INPOLY123A
                       exSpouseName:
-                        description: The name of the ex-spouse who receives the payment.
+                        description: The name of the ex-spouse who receives the payment. Must not be empty or contain only whitespace.
                         type: string
+                        pattern: ^.{1,105}$
                         example: Hilda
                         minLength: 1
                         maxLength: 105
@@ -1937,29 +1942,31 @@ paths:
                     type: object
                     properties:
                       customerReference:
-                        description: A reference or friendly name used by the customer.
+                        description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                         type: string
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         example: INPOLY123A
                       businessName:
-                        description: The name of the business that has ceased trading.
+                        description: The name of the business that has ceased trading. Must not be empty or contain only whitespace.
+                        type: string
+                        pattern: ^.{1,105}$
                         minLength: 1
                         maxLength: 105
-                        type: string
                       dateBusinessCeased:
                         description: 'The date the business ceased trading. Date in the format: `YYYY-MM-DD`'
                         type: string
                         format: date
                         example: '2018-04-06'
                       natureOfTrade:
-                        description: The trading nature of the business.
+                        description: The trading nature of the business. Must not be empty or contain only whitespace.
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         type: string
                       incomeSource:
-                        description: Income source identifier or UTR (Unique Taxpayer Reference).
+                        description: Income source identifier or UTR (Unique Taxpayer Reference). Must not be empty or contain only whitespace.
+                        type: string
+                        pattern: ^.{1,105}$
                         minLength: 1
                         maxLength: 105
-                        type: string
                       amount:
                         description: The amount which can be deducted from chargeable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
@@ -1975,7 +1982,7 @@ paths:
                   type: object
                   properties:
                     customerReference:
-                      description: A reference or friendly name used by the customer.
+                      description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                       type: string
                       pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                       example: INPOLY123A
@@ -1996,15 +2003,16 @@ paths:
                     type: object
                     properties:
                       customerReference:
-                        description: A reference or friendly name used by the customer.
+                        description: A reference or friendly name used by the customer. Must not be empty or contain only whitespace.
                         type: string
                         pattern: ^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$
                         example: INPOLY123A
                       lenderName:
-                        description: The name of the individual, public group, private group, or financial institution that made the funds available.
+                        description: The name of the individual, public group, private group, or financial institution that made the funds available. Must not be empty or contain only whitespace.
+                        type: string
+                        pattern: ^.{1,105}$
                         minLength: 1
                         maxLength: 105
-                        type: string
                       reliefClaimed:
                         description: The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         type: number
@@ -3571,7 +3579,7 @@ paths:
                             type: object
                             properties:
                               charityNames:
-                                description: List of all the names of all non-UK charities that received Gift Aid payments. This is mandatory if amount is greater than zero.
+                                description: List of all the names of all non-UK charities that received Gift Aid payments. This is mandatory if amount is greater than zero. Must not be empty or contain only whitespace.
                                 type: array
                                 items:
                                   type: string
@@ -3625,7 +3633,7 @@ paths:
                             type: object
                             properties:
                               charityNames:
-                                description: List of all the names of all non-UK charities that received gifts. This is mandatory if amount is greater than zero.
+                                description: List of all the names of all non-UK charities that received gifts. This is mandatory if amount is greater than zero. Must not be empty or contain only whitespace.
                                 type: array
                                 items:
                                   type: string
@@ -3881,7 +3889,7 @@ paths:
                           type: object
                           properties:
                             charityNames:
-                              description: List of all the names of all non-UK charities that received Gift Aid payments. This is mandatory if amount is greater than zero.
+                              description: List of all the names of all non-UK charities that received Gift Aid payments. This is mandatory if amount is greater than zero. Must not be empty or contain only whitespace.
                               type: array
                               items:
                                 type: string
@@ -3935,7 +3943,7 @@ paths:
                           type: object
                           properties:
                             charityNames:
-                              description: List of all the names of all non-UK charities that received gifts. This is mandatory if amount is greater than zero.
+                              description: List of all the names of all non-UK charities that received gifts. This is mandatory if amount is greater than zero. Must not be empty or contain only whitespace.
                               type: array
                               items:
                                 type: string
