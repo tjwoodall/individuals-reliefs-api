@@ -5,16 +5,17 @@
   "type": "object",
   "properties": {
     "submittedOn": {
-      "description": "The date the other reliefs was added. It must be provided in the format YYYY-MM-DDThh:mm:ssZ",
+      "description": "The date the other reliefs was added. It must be provided in the format `YYYY-MM-DDThh:mm:ss.SSSZ`",
+      "format": "date-time",
       "type": "string",
       "example": "2019-04-04T01:01:01.000Z"
     },
     "nonDeductibleLoanInterest": {
-      "description": "Details of non-deductible loan interest claimed",
+      "description": "Details of non-deductible loan interest claimed. Must not be empty or contain only whitespace.",
       "type": "object",
       "properties": {
         "customerReference": {
-          "description": "A reference or friendly name used by the customer.",
+          "description": "A reference or friendly name used by the customer. Must not be empty or contain only whitespace.",
           "type": "string",
           "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
           "example": "INPOLY123A"
@@ -22,7 +23,7 @@
         "reliefClaimed": {
           "description": "The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2000.99",
+          "example": 2000.99,
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99
@@ -34,11 +35,11 @@
       "additionalProperties": false
     },
     "payrollGiving": {
-      "description": "Details of payroll giving relief claimed.",
+      "description": "Details of payroll giving relief claimed. Must not be empty or contain only whitespace.",
       "type": "object",
       "properties": {
         "customerReference": {
-          "description": "A reference or friendly name used by the customer.",
+          "description": "A reference or friendly name used by the customer. Must not be empty or contain only whitespace.",
           "type": "string",
           "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
           "example": "INPOLY123A"
@@ -46,7 +47,7 @@
         "reliefClaimed": {
           "description": "The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2000.99",
+          "example": 2000.99,
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99
@@ -62,7 +63,7 @@
       "type": "object",
       "properties": {
         "customerReference": {
-          "description": "A reference or friendly name used by the customer.",
+          "description": "A reference or friendly name used by the customer. Must not be empty or contain only whitespace.",
           "type": "string",
           "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
           "example": "INPOLY123A"
@@ -70,7 +71,7 @@
         "amount": {
           "description": "The amount of relief claimed on qualifying shares and securities. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2000.99",
+          "example": 2000.99,
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99
@@ -88,23 +89,29 @@
         "type": "object",
         "properties": {
           "customerReference": {
-            "description": "A reference or friendly name used by the customer.",
+            "description": "A reference or friendly name used by the customer. Must not be empty or contain only whitespace.",
             "type": "string",
+            "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
             "example": "INPOLY123A"
           },
           "exSpouseName": {
-            "description": "The name of the ex-spouse who receives the payment.",
-            "type": "string"
+            "description": "The name of the ex-spouse who receives the payment. Must not be empty or contain only whitespace.",
+            "type": "string",
+            "pattern": "^.{1,105}$",
+            "example": "Hilda",
+            "minLength": 1,
+            "maxLength": 105
           },
           "exSpouseDateOfBirth": {
-            "description": "The date ex-spouse was born.\n\nDate in the format: YYYY-MM-DD",
+            "description": "The date ex-spouse was born.\n\nDate in the format: `YYYY-MM-DD`",
             "type": "string",
+            "format": "date",
             "example": "2018-04-06"
           },
           "amount": {
             "description": "The amount paid to a former spouse or civil partner who was born before 6 April 1935. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": "2000.99",
+            "example": 2000.99,
             "multipleOf": 0.01,
             "minimum": 0,
             "maximum": 99999999999.99
@@ -123,33 +130,36 @@
         "type": "object",
         "properties": {
           "customerReference": {
-            "description": "A reference or friendly name used by the customer.",
+            "description": "A reference or friendly name used by the customer. Must not be empty or contain only whitespace.",
             "type": "string",
             "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
             "example": "INPOLY123A"
           },
           "businessName": {
-            "description": "The name of the business that has ceased trading.",
+            "description": "The name of the business that has ceased trading. Must not be empty or contain only whitespace.",
+            "pattern": "^.{1,105}$",
             "type": "string"
           },
           "dateBusinessCeased": {
-            "description": "The date the business ceased trading. Date in the format: YYYY-MM-DD",
+            "description": "The date the business ceased trading. Date in the format: `YYYY-MM-DD`",
             "type": "string",
+            "format": "date",
             "example": "2018-04-06"
           },
           "natureOfTrade": {
-            "description": "The trading nature of the business.",
+            "description": "The trading nature of the business. Must not be empty or contain only whitespace.",
             "type": "string",
             "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$"
           },
           "incomeSource": {
-            "description": "Income source identifier or UTR (Unique Taxpayer Reference).",
+            "description": "Income source identifier or UTR (Unique Taxpayer Reference). Must not be empty or contain only whitespace.",
+            "pattern": "^.{1,105}$",
             "type": "string"
           },
           "amount": {
             "description": "The amount which can be deducted from chargeable gains. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": "2000.99",
+            "example": 2000.99,
             "multipleOf": 0.01,
             "minimum": 0,
             "maximum": 99999999999.99
@@ -166,7 +176,7 @@
       "type": "object",
       "properties": {
         "customerReference": {
-          "description": "A reference or friendly name used by the customer.",
+          "description": "A reference or friendly name used by the customer. Must not be empty or contain only whitespace.",
           "type": "string",
           "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
           "example": "INPOLY123A"
@@ -174,7 +184,7 @@
         "reliefClaimed": {
           "description": "The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
           "type": "number",
-          "example": "2000.99",
+          "example": 2000.99,
           "multipleOf": 0.01,
           "minimum": 0,
           "maximum": 99999999999.99
@@ -186,25 +196,26 @@
       "additionalProperties": false
     },
     "qualifyingLoanInterestPayments": {
-      "description": "Details of qualifying loan interest payments made.",
+      "description": "Details of qualifying loan interest payments made. Must not be empty or contain only whitespace.",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "customerReference": {
-            "description": "A reference or friendly name used by the customer.",
+            "description": "A reference or friendly name used by the customer. Must not be empty or contain only whitespace.",
             "type": "string",
             "pattern": "^[0-9a-zA-Z{À-˿’}\\- _&`():.'^]{1,90}$",
             "example": "INPOLY123A"
           },
           "lenderName": {
-            "description": "The name of the individual, public group, private group, or financial institution that made the funds available.",
-            "type": "string"
+            "description": "The name of the individual, public group, private group, or financial institution that made the funds available. Must not be empty or contain only whitespace.",
+            "type": "string",
+            "pattern": "^.{1,105}$",
           },
           "reliefClaimed": {
             "description": "The amount on which relief is claimed for the tax year. The value must be between 0 and 99999999999.99 up to 2 decimal places.",
             "type": "number",
-            "example": "2000.99",
+            "example": 2000.99,
             "multipleOf": 0.01,
             "minimum": 0,
             "maximum": 99999999999.99
