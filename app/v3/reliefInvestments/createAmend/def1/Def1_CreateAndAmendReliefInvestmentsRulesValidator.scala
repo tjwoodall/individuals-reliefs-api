@@ -62,7 +62,10 @@ object Def1_CreateAndAmendReliefInvestmentsRulesValidator extends RulesValidator
     import item._
 
     combine(
-      ResolveStringPattern(uniqueInvestmentRef, uniqueInvestmentRefRegex, UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
+      ResolveStringPattern(
+        uniqueInvestmentRef,
+        uniqueInvestmentRefRegex,
+        UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
       ResolveStringPattern(name, nameRegex, NameFormatError.withPath(s"/$itemType/$index/$nameField")),
       validateDate(dateOfInvestment, itemType, index),
       validateNumericFields(amountInvested, reliefClaimed, itemType, index)
