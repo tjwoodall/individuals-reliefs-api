@@ -70,7 +70,10 @@ object Def2_CreateAndAmendReliefInvestmentsRulesValidator extends RulesValidator
     import item._
 
     combine(
-      ResolveStringPattern(uniqueInvestmentRef, uniqueInvestmentRefRegex, UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
+      ResolveStringPattern(
+        uniqueInvestmentRef,
+        uniqueInvestmentRefRegex,
+        UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
       ResolveStringPattern(name, nameRegex, NameFormatError.withPath(s"/$itemType/$index/$nameField")),
       validateMaybeDate(dateOfInvestment, itemType, index),
       validateNumericFields(amountInvested, reliefClaimed, itemType, index)
@@ -82,7 +85,10 @@ object Def2_CreateAndAmendReliefInvestmentsRulesValidator extends RulesValidator
     import item._
 
     combine(
-      ResolveStringPattern(uniqueInvestmentRef, uniqueInvestmentRefRegex, UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
+      ResolveStringPattern(
+        uniqueInvestmentRef,
+        uniqueInvestmentRefRegex,
+        UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
       ResolveStringPattern(name, nameRegex, NameFormatError.withPath(s"/$itemType/$index/$nameField")),
       validateDate(dateOfInvestment, itemType, index),
       validateNumericFields(amountInvested, reliefClaimed, itemType, index)
@@ -95,7 +101,10 @@ object Def2_CreateAndAmendReliefInvestmentsRulesValidator extends RulesValidator
     import item._
 
     combine(
-      ResolveStringPattern(uniqueInvestmentRef, uniqueInvestmentRefRegex, UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
+      ResolveStringPattern(
+        uniqueInvestmentRef,
+        uniqueInvestmentRefRegex,
+        UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
       ResolveStringPattern(name, nameRegex, NameFormatError.withPath(s"/$itemType/$index/$nameField")),
       validateDate(dateOfInvestment, itemType, index),
       validateNumericFields(amountInvested, reliefClaimed, itemType, index)
@@ -107,7 +116,10 @@ object Def2_CreateAndAmendReliefInvestmentsRulesValidator extends RulesValidator
     import item._
 
     combine(
-      ResolveStringPattern(uniqueInvestmentRef, uniqueInvestmentRefRegex, UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
+      ResolveStringPattern(
+        uniqueInvestmentRef,
+        uniqueInvestmentRefRegex,
+        UniqueInvestmentRefFormatError.withPath(s"/$itemType/$index/uniqueInvestmentRef")),
       ResolveStringPattern(name, nameRegex, NameFormatError.withPath(s"/$itemType/$index/$nameField")),
       validateDate(dateOfInvestment, itemType, index),
       validateNumericFields(amountInvested, reliefClaimed, itemType, index)
