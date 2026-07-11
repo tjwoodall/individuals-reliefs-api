@@ -2576,7 +2576,7 @@ paths:
                       regularPensionContributions:
                         type: number
                         description: |-
-                          The amount of regular pension contributions.
+                          The total amount of pension contributions, including both regular and one-off payments.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         example: '1999.99'
@@ -2586,7 +2586,7 @@ paths:
                       oneOffPensionContributionsPaid:
                         type: number
                         description: |-
-                          The amount of the one off pensions contribution.
+                          The amount of one-off pension contribution already included in the total pension contribution.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         example: '1999.99'
@@ -2596,7 +2596,7 @@ paths:
                       retirementAnnuityPayments:
                         type: number
                         description: |-
-                          The amount of retirement annuity received.
+                          The amount of retirement annuity payments.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         example: '1999.99'
@@ -2789,7 +2789,7 @@ paths:
                     regularPensionContributions:
                       type: number
                       description: |-
-                        The amount of regular pension contributions.
+                        The total amount of pension contributions, including both regular and one-off payments.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       example: '1999.99'
@@ -2799,7 +2799,7 @@ paths:
                     oneOffPensionContributionsPaid:
                       type: number
                       description: |-
-                        The amount of the one off pensions contribution.
+                        The amount of one-off pension contribution already included in the total pension contribution.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       example: '1999.99'
@@ -2809,7 +2809,7 @@ paths:
                     retirementAnnuityPayments:
                       type: number
                       description: |-
-                        The amount of retirement annuity received.
+                        The amount of retirement annuity payments.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       example: '1999.99'
