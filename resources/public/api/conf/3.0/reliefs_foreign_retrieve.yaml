@@ -39,8 +39,7 @@ responses:
         examples:
           example-response:
             description: Example response
-            value:
-              $ref: "./examples/retrieve_reliefs_foreign_response.json"
+            externalValue: "./examples/retrieve_reliefs_foreign_response.json"
 
   "400":
     description: Bad request

@@ -40,8 +40,7 @@ requestBody:
       examples:
         example-1:
           description: Default Example
-          value:
-            $ref: "./examples/amend_relief_investments_request.json"
+          externalValue: "./examples/amend_relief_investments_request.json"
 
 responses:
   "204":
