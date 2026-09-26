@@ -3146,7 +3146,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
+                anyOf:
                   - $schema: http://json-schema.org/draft-04/schema#
                     title: TY 2024-25 or before
                     description: Charitable Givings
@@ -3457,7 +3457,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
+              anyOf:
                 - $schema: http://json-schema.org/draft-04/schema#
                   title: TY 2024-25 or before
                   type: object
