@@ -42,12 +42,10 @@ requestBody:
       examples:
           TY 2024-25 or before:
             description: Create and Amend Releifs Investment for TY 2024-25 or before
-            value:
-              $ref: "./examples/amend_relief_investments/def1/request.json"
+            externalValue: "./examples/amend_relief_investments/def1/request.json"
           TY 2025-26 onwards:
             description: Create and Amend Releifs Investment for TY 2025-26 onwards
-            value:
-              $ref: "./examples/amend_relief_investments/def2/request.json"
+            externalValue: "./examples/amend_relief_investments/def2/request.json"
 
 responses:
   "204":
