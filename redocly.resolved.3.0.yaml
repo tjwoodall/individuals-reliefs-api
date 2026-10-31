@@ -2994,7 +2994,7 @@ paths:
                       regularPensionContributions:
                         type: number
                         description: |-
-                          The total amount of pension contributions, including both regular and one-off payments.
+                          The total amount of regular pension contributions.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         example: 1999.99
@@ -3004,7 +3004,7 @@ paths:
                       oneOffPensionContributionsPaid:
                         type: number
                         description: |-
-                          The amount of one-off pension contribution already included in the total pension contribution.
+                          The amount of one off pension contributions paid.
 
                           The value must be between 0 and 99999999999.99 up to 2 decimal places.
                         example: 1999.99
@@ -3207,7 +3207,7 @@ paths:
                     regularPensionContributions:
                       type: number
                       description: |-
-                        The total amount of pension contributions, including both regular and one-off payments.
+                        The total amount of regular pension contributions.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       example: 1999.99
@@ -3217,7 +3217,7 @@ paths:
                     oneOffPensionContributionsPaid:
                       type: number
                       description: |-
-                        The amount of one-off pension contribution already included in the total pension contribution.
+                        The amount of one off pension contributions paid.
 
                         The value must be between 0 and 99999999999.99 up to 2 decimal places.
                       example: 1999.99
